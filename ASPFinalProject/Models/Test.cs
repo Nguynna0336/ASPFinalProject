@@ -8,13 +8,12 @@ namespace ASPFinalProject.Models
         [Key]
         public int TestId { get; set; }
 
-        public string TestTitle { get; set; } = null!;
+        public string TestTitle { get; set; }
 
         public string? Description { get; set; }
 
-        public bool? IsOpen { get; set; } = true;
+        public bool IsOpen { get; set; } = true;
 
-        [ForeignKey("Author")]
         public int AuthorId { get; set; }
 
         public DateTime? CreatedAt { get; set; }
@@ -27,10 +26,10 @@ namespace ASPFinalProject.Models
 
         public int NumberOfQuestion { get; set; }
 
-        public virtual User Author { get; set; } = null!;
+        [ForeignKey("AuthorId")]
+        public virtual User Author { get; set; }
 
         public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
-
         public virtual ICollection<Result> Results { get; set; } = new List<Result>();
     }
 }

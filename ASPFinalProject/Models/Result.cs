@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ASPFinalProject.Models
 {
@@ -8,16 +9,18 @@ namespace ASPFinalProject.Models
         public int ResultId { get; set; }
 
         [Required]
-        public int? TestId { get; set; }
+        public int TestId { get; set; }
 
         [Required]
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
 
-        public int? Score { get; set; }
+        public float? Score { get; set; }
         public DateTime? SubmitAt { get; set; }
 
-        public virtual Test? Test { get; set; }
+        [ForeignKey("TestId")]
+        public virtual Test Test { get; set; }
 
-        public virtual User? User { get; set; }
+        [ForeignKey("UserId")]
+        public virtual User  User { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using ASPFinalProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPFinalProject.Migrations
 {
     [DbContext(typeof(ExamDbContext))]
-    partial class ExamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240601040032_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,8 +97,8 @@ namespace ASPFinalProject.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ResultId"));
 
-                    b.Property<float?>("Score")
-                        .HasColumnType("float");
+                    b.Property<int?>("Score")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("SubmitAt")
                         .HasColumnType("datetime(6)");
@@ -161,7 +164,7 @@ namespace ASPFinalProject.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("IsOpen")
+                    b.Property<bool?>("IsOpen")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<int>("NumberOfQuestion")

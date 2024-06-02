@@ -1,21 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace ASPFinalProject.Models
 {
-    public class Role
+    public class Role : IdentityRole<int>
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int RoleId { get; set; }
-        [Required]
 
-        public string RoleName { get; set; } = null!;
-
-        public string? Description { get; set; }
-
-        [JsonIgnore]
-        public virtual ICollection<User> Users { get; set; } = new List<User>();
     }
 }

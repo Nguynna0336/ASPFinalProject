@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace ASPFinalProject.Models
 {
-    public class ExamDbContext : DbContext
+    public class ExamDbContext : IdentityDbContext<User, Role, int>
     {
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
@@ -15,9 +16,6 @@ namespace ASPFinalProject.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Username)
-                .IsUnique();
             base.OnModelCreating(modelBuilder);
         }
     }
