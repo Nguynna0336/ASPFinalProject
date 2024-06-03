@@ -27,6 +27,7 @@ builder.Services.AddIdentity<User, Role>(options =>
 
     options.Lockout.MaxFailedAccessAttempts = 5;
 })
+    .AddRoles<Role>()
     .AddEntityFrameworkStores<ExamDbContext>()
     .AddDefaultTokenProviders();
 
@@ -72,16 +73,20 @@ app.Run();
 
 async Task CreateRoles(IServiceProvider serviceProvider)
 {
-    var roleManager = serviceProvider.GetRequiredService<RoleManager<Role>>();
-    string[] roleNames = { "Admin", "Student", "Teacher" };
-    IdentityResult roleResult;
-
-    foreach (var roleName in roleNames)
+    using(var scope = serviceProvider.CreateScope())
     {
-        var roleExist = await roleManager.RoleExistsAsync(roleName);
-        if(!roleExist)
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+        string[] roleNames = { "Admin", "Student", "Teacher" };
+        IdentityResult roleResult;
+
+        foreach (var roleName in roleNames)
         {
-            roleResult = await roleManager.CreateAsync(new Role() { Name = roleName });
+            var roleExist = await roleManager.RoleExistsAsync(roleName);
+            if (!roleExist)
+            {
+                roleResult = await roleManager.CreateAsync(new Role() { Name = roleName });
+            }
         }
     }
+
 }
