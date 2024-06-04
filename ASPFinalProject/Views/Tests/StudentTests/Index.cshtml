@@ -38,9 +38,9 @@
                         @:<div class="row g-3">
         }
         if(i % 4 != 3) {
-            <div class="col-lg-@(i % 3 == 0? 12:6) col-md-12 wow zoomIn" data-wow-delay="0.1s">
+            <div class="col-lg-@(i % 4 == 0? 12:6) col-md-12 wow zoomIn" data-wow-delay="0.1s">
                 <a class="position-relative d-block overflow-hidden" href="">
-                    <img class="img-fluid" src="img/cat-1.jpg" alt="">
+                    <img class="img-fluid" src="img/cat-@(i%4).jpg" alt="">
                     <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
                         <h5 class="m-0">@Html.DisplayFor(modelItem => item.TestTitle)</h5>
                         <small class="text-primary">@Html.DisplayFor(modelItem => item.NumberOfQuestion)</small>
@@ -69,7 +69,6 @@
         i++;
     }
 </div> 
-
 
 <!-- Testimonial Start -->
 <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
