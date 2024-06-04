@@ -75,7 +75,8 @@ namespace ASPFinalProject.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, "Student");
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    // return RedirectToAction("Index", "Home");
+                    return Json(user);
                 }
                 foreach (var error in result.Errors)
                 {
@@ -185,6 +186,7 @@ namespace ASPFinalProject.Controllers
             return _context.Users.Any(e => e.Id == id);
         }
 
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
