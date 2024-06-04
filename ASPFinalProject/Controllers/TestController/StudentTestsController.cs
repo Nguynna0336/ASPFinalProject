@@ -25,6 +25,7 @@ namespace ASPFinalProject.Controllers.TestController
         }
 
         // GET: StudentTests
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
