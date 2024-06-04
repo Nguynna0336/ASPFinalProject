@@ -178,8 +178,12 @@ namespace ASPFinalProject.Controllers.Test
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if(TestExists(id))
+            {
+                return NotFound();
+            }
             var test = await _context.Tests.FindAsync(id);
-            if (test != null || test.AuthorId != _userManager.GetUserAsync(User).Id)
+            if (test != null && test.AuthorId != _userManager.GetUserAsync(User).Id)
             {
                 _context.Tests.Remove(test);
             }
@@ -203,7 +207,7 @@ namespace ASPFinalProject.Controllers.Test
             var questionList = await _context.Questions.Where(q => q.TestId == test.TestId).ToListAsync();
             if(questionList.Count < test.NumberOfQuestion || questionList == null)
             {
-                return BadRequest("You haven't add enough question. Current: " + questionList.Count + ". Required: " + test.NumberOfQuestion);
+                return BadRequest("You haven't add enough question. Required: " + test.NumberOfQuestion);
             }
             test.IsOpen = true;
             _context.Update(test);
