@@ -12,7 +12,7 @@ using ASPFinalProject.DTOs.Test;
 
 namespace ASPFinalProject.Controllers.Test
 {
-    // [Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public class TeacherTestsController : Controller
     {
         private readonly ExamDbContext _context;
@@ -35,7 +35,7 @@ namespace ASPFinalProject.Controllers.Test
             var examDbContext = _context.Tests
                 .Where(t => t.Author.Id == currentUser.Id)
                 .Include(t => t.Author);
-            return View(await examDbContext.ToListAsync());
+            return View("~/Views/Tests/TeacherTests/Index.cshtml", await examDbContext.ToListAsync());
         }
 
         // GET: Tests/Details/5

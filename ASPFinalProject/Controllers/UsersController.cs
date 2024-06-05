@@ -79,13 +79,12 @@ namespace ASPFinalProject.Controllers
                     SecurityStamp = Guid.NewGuid().ToString(), 
                     Role = (await _roleManager.FindByIdAsync(2.ToString()))! };
                 var result = await _userManager.CreateAsync(user, register.Password);
-                await _userManager.AddToRoleAsync(user, "Student");
+                // await _userManager.AddToRoleAsync(user, "Student");
                 if(result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "Student");
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                     return RedirectToAction("Index", "Home");
-                    /*return Json(user);*/
+                    return RedirectToAction("Index", "Home");
                 }
                 foreach (var error in result.Errors)
                 {
