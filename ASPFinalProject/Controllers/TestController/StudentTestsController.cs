@@ -102,7 +102,10 @@ namespace ASPFinalProject.Controllers.TestController
                 return NotFound();
             }
             ViewBag.Test = test;
-            ViewBag.Result = result;
+            if(!test.IsOpen)
+            {
+                ViewBag.Result = result;
+            }
             return View();
         }
         public async Task<IActionResult> UnEnroll(int testId, int userId)
@@ -167,13 +170,12 @@ namespace ASPFinalProject.Controllers.TestController
             {
                 return BadRequest("Student didn't enroll this exam");
             }
-            List<SubmitHistory> submitHistories = new List<SubmitHistory>();
+            List<SubmitHistory> submitHistories = new();
             try
             {
                 foreach (var submitDTO in submitDTOs)
                 {
-                    Question question = await _context.Questions.FirstOrDefaultAsync(q => q.QuestionsId == submitDTO.questionId);
-                    if(question == null) { throw new Exception("Cannot find question with id: " +  submitDTO.questionId); }
+                    var question = await _context.Questions.FirstOrDefaultAsync(q => q.QuestionsId == submitDTO.questionId) ?? throw new Exception("Cannot find question with id: " +  submitDTO.questionId);
                     SubmitHistory submitHistory = new SubmitHistory()
                     {
                         UserId = user.Id,
@@ -185,7 +187,7 @@ namespace ASPFinalProject.Controllers.TestController
                     submitHistories.Add(submitHistory);
                 }
                 result.SubmitAt = DateTime.Now;
-                result.Score = calcScore(testId, submitHistories);
+                result.Score = CalcScore(testId, submitHistories);
                 _context.Update(result);
                 await _context.SaveChangesAsync();
             } catch (Exception ex)
@@ -196,17 +198,17 @@ namespace ASPFinalProject.Controllers.TestController
             return RedirectToAction(nameof(Index));
         }
 
-        public float calcScore(int testId, List<SubmitHistory> submitHistories)
+        public float CalcScore(int testId, List<SubmitHistory> submitHistories)
         {
             int count = 0;
             var test =  _context.Tests.FirstOrDefault(t => t.TestId == testId);
-            if (test == null || submitHistories.Any(t => t.Question.TestId != testId))
+            if (test == null || submitHistories.Any(t => t.Question!.TestId != testId))
             {
                 return -1;
             }
             foreach (var submitHistory in submitHistories)
             {
-                if(submitHistory.answer.Equals(submitHistory.Question.Answer)) { count++; }
+                if(submitHistory.answer.Equals(submitHistory.Question!.Answer)) { count++; }
             }
             return count/test.NumberOfQuestion;
         }
