@@ -12,7 +12,7 @@ using ASPFinalProject.DTOs.Test;
 
 namespace ASPFinalProject.Controllers.Test
 {
-    [Authorize(Roles = "Teacher")]
+    // [Authorize(Roles = "Teacher")]
     public class TeacherTestsController : Controller
     {
         private readonly ExamDbContext _context;
@@ -60,7 +60,7 @@ namespace ASPFinalProject.Controllers.Test
         // GET: Tests/Create
         public IActionResult Create()
         {
-            return View();
+            return View("~/Views/Tests/TeacherTests/Create.cshtml");
         }
 
         // POST: Tests/Create
