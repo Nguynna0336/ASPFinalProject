@@ -1,7 +1,7 @@
 ﻿@model ASPFinalProject.DTOs.User.LoginDTO
 
 @{
-    ViewData["Title"] = "Login";
+	ViewData["Title"] = "Login";
 }
 
 
@@ -25,7 +25,19 @@
 						<span asp-validation-for="@Model.password" class="text-danger"></span>
 					</div>
 					<div class="row g-4 text-center align-items-center justify-content-center pt-4">
-						<button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Đăng nhập</button>
+						<div class="col-md-12 col-lg-6">
+							<div class="row g-4 text-center align-items-center justify-content-center pt-4 w-100">
+								<button type="buttom"
+									class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Cancel</button>
+							</div>
+						</div>
+
+						<div class="col-md-12 col-lg-6">
+							<div class="row g-4 text-center align-items-center justify-content-center pt-4 w-100">
+								<button type="submit"
+									class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Create</button>
+							</div>
+						</div>
 						<a asp-control="KhachHang" asp-action="QuenMatKhau" class="btn border-danger">Quên mật khẩu</a>
 					</div>
 				</div>

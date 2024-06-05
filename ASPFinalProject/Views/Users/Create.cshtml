@@ -17,23 +17,23 @@
 						<span asp-validation-for="@Model.Fullname" class="text-danger"></span>
 					</div>
 
-					<div class="col-md-12 col-lg-6">
-						<div class="form-item w-100">
+					<div class="form-item">
+						<div class="form-item">
 							<label asp-for="@Model.Username" class="form-label my-3"></label><sup>*</sup>
 							<input asp-for="@Model.Username" class="form-control">
 							<span asp-validation-for="@Model.Username" class="text-danger"></span>
 						</div>
 					</div>
 
-					<div class="col-md-12 col-lg-6">
+					<div class="form-item">
 						<label asp-for="@Model.Password" class="form-label my-3"></label><sup>*</sup>
-						<input asp-for="@Model.Password" class="form-control">
+						<input type="password" asp-for="@Model.Password" class="form-control">
 						<span asp-validation-for="@Model.Password" class="text-danger"></span>
 					</div>
 
-					<div class="col-md-12 col-lg-6">
+					<div class="form-item">
 						<label asp-for="@Model.ConfirmPassword" class="form-label my-3"></label><sup>*</sup>
-						<input asp-for="@Model.ConfirmPassword" class="form-control">
+						<input type="password" asp-for="@Model.ConfirmPassword" class="form-control">
 						<span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
 					</div>
 
@@ -44,9 +44,19 @@
 					</div>
 
 				</div>
-				<div class="row g-4 text-center align-items-center justify-content-center pt-4">
-					<button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Create</button>
+
+                <div class="col-md-12 col-lg-6">
+					<div class="row g-4 text-center align-items-center justify-content-center pt-4 w-100">
+					    <button type="buttom" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Cancel</button>
+				    </div>
 				</div>
+
+                <div class="col-md-12 col-lg-6">
+					<div class="row g-4 text-center align-items-center justify-content-center pt-4 w-100">
+					    <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Create</button>
+				    </div>
+				</div>
+				
 			</div>
 		</form>
 	</div>
