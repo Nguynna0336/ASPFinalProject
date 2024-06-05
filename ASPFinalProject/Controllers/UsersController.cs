@@ -53,7 +53,7 @@ namespace ASPFinalProject.Controllers
         }
 
         // GET: Users/Create
-        [AllowAnonymous]
+        // [AllowAnonymous]
         public IActionResult Create()
         {
             ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Id");
