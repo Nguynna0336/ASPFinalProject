@@ -13,6 +13,7 @@ using ASPFinalProject.DTOs.Test;
 namespace ASPFinalProject.Controllers.Test
 {
     [Authorize(Roles = "Teacher")]
+    [Area("Teacher")]
     public class TeacherTestsController : Controller
     {
         private readonly ExamDbContext _context;
@@ -35,7 +36,7 @@ namespace ASPFinalProject.Controllers.Test
             var examDbContext = _context.Tests
                 .Where(t => t.Author.Id == currentUser.Id)
                 .Include(t => t.Author);
-            return View("~/Views/Tests/TeacherTests/Index.cshtml", await examDbContext.ToListAsync());
+            return View(await examDbContext.ToListAsync());
         }
 
         // GET: Tests/Details/5
@@ -60,7 +61,7 @@ namespace ASPFinalProject.Controllers.Test
         // GET: Tests/Create
         public IActionResult Create()
         {
-            return View("~/Views/Tests/TeacherTests/Create.cshtml");
+            return View();
         }
 
         // POST: Tests/Create
@@ -70,6 +71,7 @@ namespace ASPFinalProject.Controllers.Test
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TestDTO testDTO)
         {
+            var user = _userManager.GetUserAsync(User);
             if (ModelState.IsValid)
             {
                 Models.Test test = new()
@@ -79,7 +81,8 @@ namespace ASPFinalProject.Controllers.Test
                     IsOpen = testDTO.IsOpen,
                     Password = testDTO.Password,
                     Time = testDTO.Time,
-                    NumberOfQuestion = testDTO.NumberOfQuestion
+                    NumberOfQuestion = testDTO.NumberOfQuestion,
+                    AuthorId = user.Id
                 };
                 _context.Add(test);
                 await _context.SaveChangesAsync();

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace ASPFinalProject.Controllers.QuestionController
 {
     [Authorize(Roles = "Teacher")]
+    [Area("Teacher")]
     public class TeacherQuestionsController : Controller
     {
         private readonly ExamDbContext _context;

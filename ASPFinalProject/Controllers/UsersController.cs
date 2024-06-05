@@ -77,16 +77,11 @@ namespace ASPFinalProject.Controllers
                     Email = register.Email, 
                     Fullname = register.Fullname, 
                     SecurityStamp = Guid.NewGuid().ToString(), 
-                    Role = (await _roleManager.FindByIdAsync(2.ToString()))! };
+                    Role = (await _roleManager.FindByIdAsync(3.ToString()))! };
                 var result = await _userManager.CreateAsync(user, register.Password);
-<<<<<<< HEAD
-                // await _userManager.AddToRoleAsync(user, "Student");
-=======
-                /*await _userManager.AddToRoleAsync(user, "Student");*/
->>>>>>> 1eb26bcf4d226780dd31af8dd315d4831feaa4fd
                 if(result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Student");
+                    await _userManager.AddToRoleAsync(user, "Teacher");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
