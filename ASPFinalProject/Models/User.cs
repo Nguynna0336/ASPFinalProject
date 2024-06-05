@@ -12,9 +12,6 @@ namespace ASPFinalProject.Models
         [Required]
         public string Fullname { get; set; }
 
-        [ForeignKey("RoleId")]
-        public int RoleId { get; set; }
-
         public virtual Role Role { get; set; }
 
         // Thêm các quan hệ với các entity khác nếu cần thiết

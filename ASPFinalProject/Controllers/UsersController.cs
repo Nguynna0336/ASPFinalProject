@@ -20,12 +20,14 @@ namespace ASPFinalProject.Controllers
         private readonly ExamDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly RoleManager<Role> _roleManager;
 
-        public UsersController(ExamDbContext context, UserManager<User> userManager, SignInManager<User> signInManager )
+        public UsersController(ExamDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<Role> roleManager)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
 
@@ -63,20 +65,27 @@ namespace ASPFinalProject.Controllers
         // POST: Users/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(RegisterDTO register)
         {
             if (ModelState.IsValid)
             {
-                var user = new User { UserName =  register.Username, Email = register.Email, Fullname = register.Fullname };
+                var user = new User { 
+                    UserName = register.Username, 
+                    Email = register.Email, 
+                    Fullname = register.Fullname, 
+                    SecurityStamp = Guid.NewGuid().ToString(), 
+                    Role = (await _roleManager.FindByIdAsync(2.ToString()))! };
                 var result = await _userManager.CreateAsync(user, register.Password);
+                await _userManager.AddToRoleAsync(user, "Student");
                 if(result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "Student");
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    // return RedirectToAction("Index", "Home");
-                    return Json(user);
+                     return RedirectToAction("Index", "Home");
+                    /*return Json(user);*/
                 }
                 foreach (var error in result.Errors)
                 {
@@ -99,7 +108,6 @@ namespace ASPFinalProject.Controllers
             {
                 return NotFound();
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Id", user.RoleId);
             return View(user);
         }
 
@@ -138,7 +146,6 @@ namespace ASPFinalProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Id", user.RoleId);
             return View(user);
         }
 
