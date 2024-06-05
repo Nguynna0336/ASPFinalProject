@@ -79,7 +79,11 @@ namespace ASPFinalProject.Controllers
                     SecurityStamp = Guid.NewGuid().ToString(), 
                     Role = (await _roleManager.FindByIdAsync(2.ToString()))! };
                 var result = await _userManager.CreateAsync(user, register.Password);
+<<<<<<< HEAD
                 // await _userManager.AddToRoleAsync(user, "Student");
+=======
+                /*await _userManager.AddToRoleAsync(user, "Student");*/
+>>>>>>> 1eb26bcf4d226780dd31af8dd315d4831feaa4fd
                 if(result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "Student");
