@@ -5,7 +5,7 @@ namespace ASPFinalProject.DTOs.Test
     public class TestDTO
     {
         [Required]
-        public string TestTitle { get; set; } = null!;
+        public string TestTitle { get; set; }
 
         public string? Description { get; set; }
 

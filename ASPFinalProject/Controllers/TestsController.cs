@@ -9,6 +9,7 @@ using ASPFinalProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using ASPFinalProject.DTOs.Submit;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ASPFinalProject.Controllers.TestController
 {
@@ -17,11 +18,13 @@ namespace ASPFinalProject.Controllers.TestController
     {
         private readonly ExamDbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly INotyfService _notyfService;
 
-        public TestsController(ExamDbContext context, UserManager<User> userManager)
+        public TestsController(ExamDbContext context, UserManager<User> userManager, INotyfService notyfService)
         {
             _context = context;
             _userManager = userManager;
+            _notyfService = notyfService;
         }
 
         // GET: StudentTests
@@ -43,6 +46,7 @@ namespace ASPFinalProject.Controllers.TestController
             var user = await _userManager.GetUserAsync(User);
             if(user == null)
             {
+                _notyfService.Warning("You have to login before enroll!");
                 return Challenge();
             }
             var enrolledTest = _context.Results.Where( t => t.UserId == user.Id);
@@ -59,7 +63,7 @@ namespace ASPFinalProject.Controllers.TestController
                 return NotFound(); 
             } else if(test.Password != null && test.Password.Equals(password))
             {
-                ModelState.AddModelError(string.Empty, "Wrong password, please try again");
+                _notyfService.Error("Wrong password, please try again");
             }
             if(user == null || userId != user.Id)
             {
@@ -80,10 +84,11 @@ namespace ASPFinalProject.Controllers.TestController
             {
                 _context.Add(result);
                 await _context.SaveChangesAsync();
+                _notyfService.Success("You have enrolled successfully");
                 return RedirectToAction(nameof(Index));
             } catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, ex.Message);
+                _notyfService.Error($"Error: {ex.Message}");
                 return View();
             }
         }

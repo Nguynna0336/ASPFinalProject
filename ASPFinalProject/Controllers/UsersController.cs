@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Win32;
 using ASPFinalProject.DTOs.User;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ASPFinalProject.Controllers
 {
@@ -21,13 +22,15 @@ namespace ASPFinalProject.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<Role> _roleManager;
+        public INotyfService _notifyService;
 
-        public UsersController(ExamDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<Role> roleManager)
+        public UsersController(ExamDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<Role> roleManager,INotyfService notifyService)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _notifyService = notifyService;
         }
 
 
@@ -50,7 +53,7 @@ namespace ASPFinalProject.Controllers
             {
                 return NotFound();
             }
-
+            
             return View(user);
         }
 
@@ -83,6 +86,7 @@ namespace ASPFinalProject.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, "Teacher");
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    _notifyService.Success("You have regiters successfully");
                     return RedirectToAction("Index", "Home");
                 }
                 foreach (var error in result.Errors)
@@ -142,6 +146,7 @@ namespace ASPFinalProject.Controllers
                         throw;
                     }
                 }
+                _notifyService.Success("User's information have been edited successfully!");
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
@@ -174,7 +179,8 @@ namespace ASPFinalProject.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser == null || currentUser.Id != id)
             {
-                return Forbid();
+                _notifyService.Error("You have to login with right account to delete this");
+                return Challenge();
             }
             var user = await _context.Users.FindAsync(id);
             if (user != null)
@@ -183,6 +189,7 @@ namespace ASPFinalProject.Controllers
             }
 
             await _context.SaveChangesAsync();
+            _notifyService.Success("User's information have been deleted successfully!");
             return RedirectToAction(nameof(Index));
         }
 
@@ -207,8 +214,8 @@ namespace ASPFinalProject.Controllers
                 {
                     return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError(string.Empty, "Invalid login attempt");
             }
+            _notifyService.Error("Invalid login attempt");
             return View(login);
         }
         
@@ -241,11 +248,13 @@ namespace ASPFinalProject.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.RefreshSignInAsync(user);
+                _notifyService.Success("Password has been changed");
                 return RedirectToAction("Index", "Home");
             }
-
+            
             foreach (var error in result.Errors)
             {
+                _notifyService.Error($"Error: {error}");
                 ModelState.AddModelError(string.Empty, error.Description);
             }
 
