@@ -9,7 +9,7 @@ namespace ASPFinalProject.DTOs.Test
 
         public string? Description { get; set; }
 
-        public bool IsOpen { get; set; } = true;
+        public bool IsOpen { get; set; } = false;
 
         public string? Password { get; set; }
 

@@ -9,6 +9,7 @@ using ASPFinalProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using ASPFinalProject.DTOs.Test;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ASPFinalProject.Areas.Teacher.Controllers
 {
@@ -18,11 +19,13 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
     {
         private readonly ExamDbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly INotyfService _notyfService;
 
-        public TeacherTestsController(ExamDbContext context, UserManager<User> userManager)
+        public TeacherTestsController(ExamDbContext context, UserManager<User> userManager, INotyfService notyfService)
         {
             _context = context;
             _userManager = userManager;
+            _notyfService = notyfService;
         }
 
         // GET: Tests
@@ -42,6 +45,7 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
         // GET: Tests/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var currentUser = await _userManager.GetUserAsync(User);
             if (id == null)
             {
                 return NotFound();
@@ -50,7 +54,7 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
             var test = await _context.Tests
                 .Include(t => t.Author)
                 .FirstOrDefaultAsync(m => m.TestId == id);
-            if (test == null || test.Author.Id != _userManager.GetUserAsync(User).Id)
+            if (test == null || test.Author.Id != currentUser!.Id)
             {
                 return NotFound();
             }
@@ -235,6 +239,29 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
             return View(resultList);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> SetStatus(int testId)
+        {
+            var test = await _context.Tests.FindAsync(testId);
+            if (test == null)
+            {
+                _notyfService.Error("Cannot find test with id: " + testId.ToString());
+            }
+
+            test!.IsOpen = true;
+            try
+            {
+                _context.Update(test);
+                await _context.SaveChangesAsync();
+                _notyfService.Success("Test is open now");
+            }
+            catch (Exception ex)
+            {
+                _notyfService.Error($"Error: {ex.Message}");
+
+            }
+            return RedirectToAction("Details", new { id = testId });
+        }
         private bool TestExists(int id)
         {
             return _context.Tests.Any(e => e.TestId == id);
