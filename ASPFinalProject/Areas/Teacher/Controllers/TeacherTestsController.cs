@@ -10,13 +10,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using ASPFinalProject.DTOs.Test;
 
-namespace ASPFinalProject.Controllers.Test
+namespace ASPFinalProject.Areas.Teacher.Controllers
 {
     [Authorize(Roles = "Teacher")]
     [Area("Teacher")]
     public class TeacherTestsController : Controller
     {
-        static string defaulRoute = "~/Views/Tests/TeacherTests/";
         private readonly ExamDbContext _context;
         private readonly UserManager<User> _userManager;
 
@@ -37,7 +36,7 @@ namespace ASPFinalProject.Controllers.Test
             var examDbContext = _context.Tests
                 .Where(t => t.Author.Id == currentUser.Id)
                 .Include(t => t.Author);
-            return View(defaulRoute + "Index.cshtml", await examDbContext.ToListAsync());
+            return View(await examDbContext.ToListAsync());
         }
 
         // GET: Tests/Details/5
@@ -85,7 +84,7 @@ namespace ASPFinalProject.Controllers.Test
                     Password = testDTO.Password,
                     Time = testDTO.Time,
                     NumberOfQuestion = testDTO.NumberOfQuestion,
-                    AuthorId = currentUser.Id
+                    AuthorId = currentUser!.Id
                 };
                 _context.Add(test);
                 await _context.SaveChangesAsync();
@@ -107,8 +106,7 @@ namespace ASPFinalProject.Controllers.Test
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Fullname", test.AuthorId);
-            return View(defaulRoute + "Edit.cshtml");
+            return View(test);
         }
 
         // POST: Tests/Edit/5
