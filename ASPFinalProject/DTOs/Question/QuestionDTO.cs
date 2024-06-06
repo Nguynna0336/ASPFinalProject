@@ -1,15 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace ASPFinalProject.Models
+namespace ASPFinalProject.DTOs.Question
 {
-    public class Question
+    public class QuestionDTO
     {
-        [Key]
-        public int QuestionsId { get; set; }
-
-        public int TestId { get; set; }
-
+        [Required]
         public string Description { get; set; } = null!;
 
         public string? OptionA { get; set; }
@@ -20,8 +15,8 @@ namespace ASPFinalProject.Models
 
         public string? OptionD { get; set; }
 
+        [Required]
         public string Answer { get; set; } = null!;
 
-        public virtual Test Test { get; set; } = null!;
     }
 }
