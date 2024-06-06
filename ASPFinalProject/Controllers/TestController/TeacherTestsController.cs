@@ -15,6 +15,7 @@ namespace ASPFinalProject.Controllers.Test
     [Authorize(Roles = "Teacher")]
     public class TeacherTestsController : Controller
     {
+        static string defaulRoute = "~/Views/Tests/TeacherTests/";
         private readonly ExamDbContext _context;
         private readonly UserManager<User> _userManager;
 
@@ -35,7 +36,7 @@ namespace ASPFinalProject.Controllers.Test
             var examDbContext = _context.Tests
                 .Where(t => t.Author.Id == currentUser.Id)
                 .Include(t => t.Author);
-            return View("~/Views/Tests/TeacherTests/Index.cshtml", await examDbContext.ToListAsync());
+            return View(defaulRoute + "Index.cshtml", await examDbContext.ToListAsync());
         }
 
         // GET: Tests/Details/5
@@ -60,7 +61,7 @@ namespace ASPFinalProject.Controllers.Test
         // GET: Tests/Create
         public IActionResult Create()
         {
-            return View("~/Views/Tests/TeacherTests/Create.cshtml");
+            return View(defaulRoute + "Create.cshtml");
         }
 
         // POST: Tests/Create
@@ -70,6 +71,7 @@ namespace ASPFinalProject.Controllers.Test
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TestDTO testDTO)
         {
+            var currentUser = await _userManager.GetUserAsync(User);
             if (ModelState.IsValid)
             {
                 Models.Test test = new()
@@ -79,7 +81,8 @@ namespace ASPFinalProject.Controllers.Test
                     IsOpen = testDTO.IsOpen,
                     Password = testDTO.Password,
                     Time = testDTO.Time,
-                    NumberOfQuestion = testDTO.NumberOfQuestion
+                    NumberOfQuestion = testDTO.NumberOfQuestion,
+                    AuthorId = currentUser.Id
                 };
                 _context.Add(test);
                 await _context.SaveChangesAsync();
@@ -102,7 +105,7 @@ namespace ASPFinalProject.Controllers.Test
                 return NotFound();
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Fullname", test.AuthorId);
-            return View(test);
+            return View(defaulRoute + "Edit.cshtml");
         }
 
         // POST: Tests/Edit/5
@@ -148,7 +151,7 @@ namespace ASPFinalProject.Controllers.Test
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "TeacherTests");
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Fullname", test.AuthorId);
             return View(test);
