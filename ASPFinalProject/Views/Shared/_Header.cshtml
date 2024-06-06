@@ -2,13 +2,13 @@
 <div class="app">
     <div class="header">
         <div class="logo logo-dark">
-            <a href="index.html">
+            <a asp-controller="Home" asp-action="Index">
                 <img src="~/assets/images/logo/logo.png" alt="Logo">
                 <img class="logo-fold" src="~/assets/images/logo/logo-fold.png" alt="Logo">
             </a>
         </div>
         <div class="logo logo-white">
-            <a href="index.html">
+            <a asp-controller="Home" asp-action="Index">
                 <img src="~/assets/images/logo/logo-white.png" alt="Logo">
                 <img class="logo-fold" src="~/assets/images/logo/logo-fold-white.png" alt="Logo">
             </a>
@@ -31,6 +31,8 @@
                     </a>
                 </li>
             </ul>
+            @if(User.Identity.IsAuthenticated)
+            {   
             <div class="nav-right">
                 <div class="dropdown dropdown-animated scale-left">
                     <div class="pointer" data-toggle="dropdown">
@@ -88,7 +90,11 @@
                         </a>
                     </div>
                 </div>
-            </div>
+                </div>
+            } else
+            {
+
+            }
         </div>
     </div>
 
