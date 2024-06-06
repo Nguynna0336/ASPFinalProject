@@ -35,20 +35,16 @@ namespace ASPFinalProject.Controllers
 
 
         // GET: Users/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
             var currentUser = await _userManager.GetUserAsync(User);
-            if(currentUser == null || currentUser.Id != id)
+            if(currentUser == null)
             {
-                return Forbid();
+                return Challenge();
             }
             var user = await _context.Users
                 .Include(u => u.Role)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == currentUser.Id);
             if (user == null)
             {
                 return NotFound();

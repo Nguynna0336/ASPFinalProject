@@ -40,8 +40,7 @@
 									<div class="col-md-11 col-lg-5" style="margin-left: 17px;">
 										<div
 											class="row g-4 text-center align-items-center justify-content-center  w-100">
-											<button type="buttom"
-												class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Cancel</button>
+											<a asp-controller="Home" asp-action="index" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Cancel</a>
 										</div>
 									</div>
 
@@ -49,12 +48,12 @@
 										<div
 											class="row g-4 text-center align-items-center justify-content-center  w-100">
 											<button type="submit"
-												class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Create</button>
+												class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Sign In</button>
 										</div>
 									</div>
 									<span class="font-size-13 text-muted mt-3">
 										Don't have an account?
-										<a class="small" href=""> Signup</a>
+										<a class="small" href="Create"> Signup</a>
 									</span>
 								</div>
 
@@ -83,3 +82,4 @@
 		await Html.RenderPartialAsync("_ValidationScriptsPartial");
 	}
 }
+
