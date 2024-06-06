@@ -13,12 +13,12 @@ using ASPFinalProject.DTOs.Submit;
 namespace ASPFinalProject.Controllers.TestController
 {
     [Authorize]
-    public class StudentTestsController : Controller
+    public class TestsController : Controller
     {
         private readonly ExamDbContext _context;
         private readonly UserManager<User> _userManager;
 
-        public StudentTestsController(ExamDbContext context, UserManager<User> userManager)
+        public TestsController(ExamDbContext context, UserManager<User> userManager)
         {
             _context = context;
             _userManager = userManager;
