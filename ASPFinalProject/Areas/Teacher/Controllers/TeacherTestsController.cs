@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using ASPFinalProject.DTOs.Test;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using PagedList.Core;
 
 namespace ASPFinalProject.Areas.Teacher.Controllers
 {
@@ -31,17 +32,23 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
         }
 
         // GET: Tests
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page=1)
         {
+            var pageNumber = page;
+            var pageSize = 10;
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser == null)
             {
                 return Challenge();
             }
-            var examDbContext = _context.Tests
+            List<Test> tests = new List<Test>();
+            tests = await _context.Tests
                 .Where(t => t.Author.Id == currentUser.Id)
-                .Include(t => t.Author);
-            return View(await examDbContext.ToListAsync());
+                .Include(t => t.Author).ToListAsync();
+            PagedList<Test> models = new PagedList<Test>(tests.AsQueryable(), pageNumber, pageSize);
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageSize = pageSize;
+            return View(models);
         }
 
         // GET: Tests/Details/5

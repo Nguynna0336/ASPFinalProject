@@ -44,12 +44,21 @@ namespace ASPFinalProject.Controllers
             }
             var user = await _context.Users
                 .Include(u => u.Role)
-                .FirstOrDefaultAsync(m => m.Id == currentUser.Id);
+                .Where(u => u.Id ==  currentUser.Id)
+                .Select(u => new UserResponseDTO 
+                { 
+                    Id = u.Id,
+                    Username = u.UserName!,
+                    Email = u.Email,
+                    Fullname = u.Fullname,
+                    RoleName = u.Role!.Name!
+                } )
+                .FirstOrDefaultAsync();
             if (user == null)
             {
+                _notifyService.Error("Something go wrong");
                 return NotFound();
-            }
-            
+            } 
             return View(user);
         }
 
@@ -100,8 +109,18 @@ namespace ASPFinalProject.Controllers
             {
                 return NotFound();
             }
-
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users
+               .Include(u => u.Role)
+               .Where(u => u.Id == id)
+               .Select(u => new UserResponseDTO
+               {
+                   Id = u.Id,
+                   Username = u.UserName!,
+                   Email = u.Email,
+                   Fullname = u.Fullname,
+                   RoleName = u.Role!.Name!
+               })
+               .FirstOrDefaultAsync();
             if (user == null)
             {
                 return NotFound();
@@ -112,7 +131,7 @@ namespace ASPFinalProject.Controllers
         // POST: Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, RegisterDTO register)
+        public async Task<IActionResult> Edit(int id, UserResponseDTO userResponseDTO)
         {
             if (!UserExists(id))
             {
@@ -123,17 +142,19 @@ namespace ASPFinalProject.Controllers
             {
                 return Forbid();
             }
-            var user = new User { UserName = register.Username, Email = register.Email, Fullname = register.Fullname };
+            currentUser.UserName = userResponseDTO.Username;
+            currentUser.Email = userResponseDTO.Email;
+            currentUser.Fullname = userResponseDTO.Fullname;
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(user);
+                    _context.Update(currentUser);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.Id))
+                    if (!UserExists(currentUser.Id))
                     {
                         return NotFound();
                     }
@@ -143,9 +164,10 @@ namespace ASPFinalProject.Controllers
                     }
                 }
                 _notifyService.Success("User's information have been edited successfully!");
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details));
             }
-            return View(user);
+            _notifyService.Error("Something go wrong");
+            return View(userResponseDTO);
         }
 
         // GET: Users/Delete/5
