@@ -37,11 +37,7 @@ namespace ASPFinalProject.Controllers.Test
             var examDbContext = _context.Tests
                 .Where(t => t.Author.Id == currentUser.Id)
                 .Include(t => t.Author);
-<<<<<<< HEAD:ASPFinalProject/Controllers/TestController/TeacherTestsController.cs
             return View(defaulRoute + "Index.cshtml", await examDbContext.ToListAsync());
-=======
-            return View(await examDbContext.ToListAsync());
->>>>>>> 57a385bb21ef41f70ef28e56a8af67716f2e54c5:ASPFinalProject/Areas/Teacher/Controllers/TeacherTestsController.cs
         }
 
         // GET: Tests/Details/5
@@ -66,11 +62,7 @@ namespace ASPFinalProject.Controllers.Test
         // GET: Tests/Create
         public IActionResult Create()
         {
-<<<<<<< HEAD:ASPFinalProject/Controllers/TestController/TeacherTestsController.cs
             return View(defaulRoute + "Create.cshtml");
-=======
-            return View();
->>>>>>> 57a385bb21ef41f70ef28e56a8af67716f2e54c5:ASPFinalProject/Areas/Teacher/Controllers/TeacherTestsController.cs
         }
 
         // POST: Tests/Create
@@ -80,11 +72,8 @@ namespace ASPFinalProject.Controllers.Test
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TestDTO testDTO)
         {
-<<<<<<< HEAD:ASPFinalProject/Controllers/TestController/TeacherTestsController.cs
             var currentUser = await _userManager.GetUserAsync(User);
-=======
             var user = _userManager.GetUserAsync(User);
->>>>>>> 57a385bb21ef41f70ef28e56a8af67716f2e54c5:ASPFinalProject/Areas/Teacher/Controllers/TeacherTestsController.cs
             if (ModelState.IsValid)
             {
                 Models.Test test = new()
@@ -95,11 +84,7 @@ namespace ASPFinalProject.Controllers.Test
                     Password = testDTO.Password,
                     Time = testDTO.Time,
                     NumberOfQuestion = testDTO.NumberOfQuestion,
-<<<<<<< HEAD:ASPFinalProject/Controllers/TestController/TeacherTestsController.cs
                     AuthorId = currentUser.Id
-=======
-                    AuthorId = user.Id
->>>>>>> 57a385bb21ef41f70ef28e56a8af67716f2e54c5:ASPFinalProject/Areas/Teacher/Controllers/TeacherTestsController.cs
                 };
                 _context.Add(test);
                 await _context.SaveChangesAsync();
