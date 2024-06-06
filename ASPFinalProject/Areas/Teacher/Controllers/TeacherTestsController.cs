@@ -223,7 +223,7 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> GetResult(int testId)
+        public async Task<IActionResult> GetResult([FromRoute(Name = "id")]int testId)
         {
             var test = await _context.Tests.FindAsync(testId);
             if( test == null )
@@ -238,11 +238,10 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
             var resultList = await _context.Results.Where(r => r.TestId == testId).ToListAsync();
             return View(resultList);
         }
-
+ 
         [HttpGet]
-        public async Task<IActionResult> SetStatus(int testId)
+        public async Task<IActionResult> SetStatus([FromRoute(Name = "id")]int testId)
         {
-            /////////////////////////////////////////////
             var test = await _context.Tests.FindAsync(testId);
             if (test == null)
             {
