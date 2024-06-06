@@ -17,6 +17,8 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
     [Area("Teacher")]
     public class TeacherTestsController : Controller
     {
+
+
         private readonly ExamDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly INotyfService _notyfService;
@@ -165,6 +167,7 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
         // GET: Tests/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            var currentUser = await _userManager.GetUserAsync(User);
             if (id == null)
             {
                 return NotFound();
@@ -173,7 +176,7 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
             var test = await _context.Tests
                 .Include(t => t.Author)
                 .FirstOrDefaultAsync(m => m.TestId == id);
-            if (test == null || test.AuthorId != _userManager.GetUserAsync(User).Id)
+            if (test == null || test.AuthorId != currentUser!.Id)
             {
                 return NotFound();
             }

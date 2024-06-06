@@ -1,67 +1,106 @@
 ﻿@model ASPFinalProject.DTOs.User.RegisterDTO
 
 @{
-    ViewData["Title"] = "Create";
+	ViewData["Title"] = "Create";
+	Layout = "~/Views/Shared/_LayoutNull.cshtml";
 }
 
 
-<div class="container-fluid py-5">
-	<div class="container py-5">
-		<h1 class="mb-4">Create Account</h1>
-		<form asp-action="Create" method="post" enctype="multipart/form-data">
-			<div class="row">
-				<div class="row">
-                    <div class="form-item">
-						<label class="form-label my-3" asp-for="@Model.Fullname"></label><sup>*</sup>
-						<input asp-for="@Model.Fullname" class="form-control" />
-						<span asp-validation-for="@Model.Fullname" class="text-danger"></span>
-					</div>
+<div class="container_form-customer">
+	<div class="form-customer">
+		<div class="container-fluid p-h-0 p-v-20 bg full-height d-flex"
+			style="background-image: url('@Url.Content("~/assets/images/others/login-3.png")')">
+			<div class="d-flex flex-column justify-content-between w-100">
+				<div class="container d-flex h-100">
+					<div class="row align-items-center w-100">
+						<div class="col-md-7 col-lg-5 m-h-auto">
+							<div class="card shadow-lg">
+								<div class="card-body">
+									<div class="d-flex align-items-center justify-content-between m-b-30">
+										<img class="img-fluid" alt="" src="~/assets/images/logo/logo.png">
+										<h2 class="m-b-0">Register</h2>
+									</div>
+									<form asp-action="Create" method="post" enctype="multipart/form-data">
+										<div class="form-group">
+											<label class="form-label my-3"
+												asp-for="@Model.Fullname"></label><sup>*</sup>
+											<input asp-for="@Model.Fullname" class="form-control" />
+											<span asp-validation-for="@Model.Fullname" class="text-danger"></span>
+										</div>
+										<div class="form-group">
+											<label asp-for="@Model.Username"
+												class="form-label my-3"></label><sup>*</sup>
+											<input asp-for="@Model.Username" class="form-control">
+											<span asp-validation-for="@Model.Username" class="text-danger"></span>
+										</div>
+										<div class="form-group">
+											<label asp-for="@Model.Password"
+												class="form-label my-3"></label><sup>*</sup>
+											<input type="password" asp-for="@Model.Password" class="form-control">
+											<span asp-validation-for="@Model.Password" class="text-danger"></span>
+										</div>
+										<div class="form-group">
+											<label asp-for="@Model.ConfirmPassword"
+												class="form-label my-3"></label><sup>*</sup>
+											<input type="password" asp-for="@Model.ConfirmPassword"
+												class="form-control">
+											<span asp-validation-for="@Model.ConfirmPassword"
+												class="text-danger"></span>
+										</div>
+										<div class="form-group">
+											<label class="form-label my-3" asp-for="@Model.Email"></label><sup>*</sup>
+											<input asp-for="@Model.Email" class="form-control" />
+											<span asp-validation-for="@Model.Email" class="text-danger"></span>
+										</div>
+										<div class="form-group d-flex align-items-center justify-content-around">
+											<div class="col-md-12 col-lg-5" style="margin-left: 16px;">
+												<div
+													class="row g-4 text-center align-items-center justify-content-center pt-3 w-100">
+													<button type="button"
+														class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Cancel</button>
+												</div>
+											</div>
 
-					<div class="form-item">
-						<div class="form-item">
-							<label asp-for="@Model.Username" class="form-label my-3"></label><sup>*</sup>
-							<input asp-for="@Model.Username" class="form-control">
-							<span asp-validation-for="@Model.Username" class="text-danger"></span>
+											<div class="col-md-12 col-lg-5">
+												<div
+													class="row g-4 text-center align-items-center justify-content-center pt-3 w-100">
+													<button type="submit"
+														class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Register</button>
+												</div>
+											</div>
+										</div>
+									</form>
+
+
+								</div>
+
+							</div>
+
 						</div>
-					</div>
 
-					<div class="form-item">
-						<label asp-for="@Model.Password" class="form-label my-3"></label><sup>*</sup>
-						<input type="password" asp-for="@Model.Password" class="form-control">
-						<span asp-validation-for="@Model.Password" class="text-danger"></span>
-					</div>
-
-					<div class="form-item">
-						<label asp-for="@Model.ConfirmPassword" class="form-label my-3"></label><sup>*</sup>
-						<input type="password" asp-for="@Model.ConfirmPassword" class="form-control">
-						<span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
-					</div>
-
-					<div class="form-item">
-						<label class="form-label my-3" asp-for="@Model.Email"></label><sup>*</sup>
-						<input asp-for="@Model.Email" class="form-control" />
-						<span asp-validation-for="@Model.Email" class="text-danger"></span>
 					</div>
 
 				</div>
-
-                <div class="col-md-12 col-lg-6">
-					<div class="row g-4 text-center align-items-center justify-content-center pt-4 w-100">
-					    <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Cancel</button>
-				    </div>
+				<div class="d-none d-md-flex p-h-40 justify-content-between">
+					<span class="">© 2019 ThemeNate</span>
+					<ul class="list-inline">
+						<li class="list-inline-item">
+							<a class="text-dark text-link" href="">Legal</a>
+						</li>
+						<li class="list-inline-item">
+							<a class="text-dark text-link" href="">Privacy</a>
+						</li>
+					</ul>
 				</div>
-
-                <div class="col-md-12 col-lg-6">
-					<div class="row g-4 text-center align-items-center justify-content-center pt-4 w-100">
-					    <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Create</button>
-				    </div>
-				</div>
-				
 			</div>
-		</form>
+		</div>
 	</div>
 </div>
 
+
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }
