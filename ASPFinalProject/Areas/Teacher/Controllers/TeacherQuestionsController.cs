@@ -75,7 +75,6 @@ namespace ASPFinalProject.Controllers.QuestionController
                     _notyfService.Error("Cannot add more questions");
                     return RedirectToAction("Index", "TeacherTests");
                 }
-                }
                 ViewBag.TestId = test.TestId;
                 ViewBag.NumberOfQuestion = test.NumberOfQuestion;
                 return View();
