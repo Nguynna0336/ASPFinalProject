@@ -15,16 +15,16 @@
     <link href="~/assets/css/app.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="main-wrapper">
+    <div class="app">
+        <div class="layout">
             @await Html.PartialAsync("_Header")
 
-
-        <div class="page-container" style="margin-top: 80px;">
+            <div class="page-container" style="margin-top: 80px;">
                 @RenderBody()
+            </div>
+
+            @await Html.PartialAsync("_Footer")
         </div>
-
-
-        @await Html.PartialAsync("_Footer")
     </div>
 
 
