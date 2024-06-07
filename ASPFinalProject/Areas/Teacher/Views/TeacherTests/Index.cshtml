@@ -5,40 +5,90 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-        <!-- Jobs Start -->
-        <div class="container-xxl py-5">
-            <div class="container">
-                <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Test Listing</h1>
-                <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="tab-content">
-                        <div id="tab" class="tab-pane fade show p-0 active">
-                            @{int ii = 0;}
-                            @foreach(var test in Model) {
-                                <div class="job-item p-4 mb-4">
-                                    <div class="row g-4">
-                                        <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                            <img class="flex-shrink-0 img-fluid border rounded" src="~/img/cat-@(ii%4).jpg" alt="" style="width: 80px; height: 80px;">
-                                            <div class="text-start ps-4">
-                                                <h5 class="mb-3">@Html.DisplayFor(modelItem => test.TestTitle)</h5>
-                                                <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>@Html.DisplayFor(modelItem => test.Time)</span>
-                                                <span class="text-truncate me-0"><i class="far fa fa-comment text-primary me-2"></i>@Html.DisplayFor(modelItem =>test.NumberOfQuestion) Question</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                            <div class="d-flex mb-3">
-                                        <a asp-action="Edit" asp-route-id="@test.TestId">Edit</a>
-                                        <a asp-action="Details" asp-route-id="@test.TestId" class="mx-3">Details</a>
-                                        <a asp-action="Delete" asp-route-id="@test.TestId">Delete</a>
-                                            </div>
-                                            <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>@Html.DisplayFor(modelItem => test.CreatedAt)</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                            <a class="btn btn-primary py-3 px-5" href="">Browse More Jobs</a>
-                        </div>
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i
+                    class="anticon anticon-home m-r-5"></i>Home</a>
+            <span class="breadcrumb-item active">Danh sách sản phẩm : page </span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+                <div class="d-md-flex">
+                    <div class="m-b-10 m-r-15">
                     </div>
                 </div>
             </div>
+            <div class="col-lg-4 text-right">
+                <a class="btn btn-primary" asp-action="Create">
+                    <i class="anticon anticon-plus-circle m-r-5"></i>
+                    <span>Add Test</span>
+                </a>
+            </div>
         </div>
-        <!-- Jobs End -->
+        <table class="table table-hover e-commerce-table">
+            <thead>
+                <tr>
+                    <th>
+                        TestTitle
+                    </th>
+                    <th>
+                        Fullname Author
+                    </th>
+                    <th>
+                        Time
+                    </th>
+                    <th>
+                       NumberOfQuestion
+                    </th>
+                    <th>
+                        Description
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.TestTitle
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    @item.Author.Fullname
+                                </div>
+                            </td>
+
+                            <td>@item.Time</td>
+                            <td style="margin-left: 100px;">@item.NumberOfQuestion</td>
+                            <td>@item.Description</td>
+
+                            <td class="text-right">
+                                <a class="btn btn-primary btn-tone m-r-5" asp-action="Details"
+                                    asp-route-id="@item.TestId">View</a>
+                                <a class="btn btn-secondary btn-tone m-r-5" asp-action="Edit"
+                                    asp-route-id="@item.TestId">Edit</a>
+                                <a class="btn btn-success btn-tone m-r-5" asp-action="Delete"
+                                    asp-route-id="@item.TestId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <div aria-label="Page navigation example">
+            <ul class="pagination">
+                <pager class="pager-container" list="@Model" asp-area="Teacher" asp-controller="TeacherTests"
+                    asp-action="Index" />
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
