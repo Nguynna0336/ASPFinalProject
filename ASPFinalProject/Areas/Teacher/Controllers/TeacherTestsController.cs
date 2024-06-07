@@ -119,7 +119,15 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
             {
                 return NotFound();
             }
-            return View(test);
+            TestDTO testdto = new TestDTO{
+                TestTitle = test.TestTitle,
+                Description = test.Description,
+                IsOpen = test.IsOpen,
+                Password = test.Password,
+                Time = test.Time,
+                NumberOfQuestion = test.NumberOfQuestion
+            };
+            return View(testdto);
         }
 
         // POST: Tests/Edit/5

@@ -4,70 +4,92 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
 
-<div>
-    <h4>Test</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TestTitle)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TestTitle)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsOpen)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsOpen)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Time)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Time)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NumberOfQuestion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NumberOfQuestion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Author.Fullname)
-        </dd>
-    </dl>
-</div>
-<div>
+
+
+<!-- Content Wrapper START -->
+<div class="main-content">
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <div id="invoice" class="p-h-30">
+                    <div class="m-t-15 lh-2">
+                        <div class="inline-block" style="font-size: 18px;">
+                            <img class="img-fluid" src="~/assets/images/logo/logo.png" alt="">
+                            <address class="p-l-10">
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">Test Title </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.TestTitle)</div>
+                                <br>
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">Description </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.Description)</div>
+                                <br>
+
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">Password </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.Password)</div>
+                                <br>
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">Time </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.Time)</div>
+                                <br>
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">Number Of Question </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.NumberOfQuestion)</div>
+                            </address>
+                        </div>
+                        <div class="float-right">
+                            <h2>Detail Test</h2>
+                        </div>
+                    </div>
+                    <div class="row m-t-20 lh-2 d-flex">
+                        <div class="col-sm-7">
+                            <h4 class="p-l-10 m-t-10">Status</h4>
+                            @if(@Model!.IsOpen == true) {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-success badge-dot m-r-10"></div>
+                                <div>Open</div>
+                            </div>
+                            } else {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-erro badge-dot m-r-10"></div>
+                                <div>Close</div>
+                            </div>
+                            }
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="m-t-80 d-flex">
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark">Create Date:</span>
+                                </div>
+                                <div class="ml-4">@Html.DisplayFor(model => model.CreatedAt)</div>
+                            </div>
+                            <div class=" d-flex">
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark">Update Date:</span>
+                                </div>
+                                <div class="ml-4 ">@Html.DisplayFor(model => model.UpdatedAt)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div >
     <a asp-action="SetStatus" asp-route-id="@Model?.TestId">Open</a>
     <a asp-action="Edit" asp-route-id="@Model?.TestId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+<!-- Content Wrapper END -->
+
