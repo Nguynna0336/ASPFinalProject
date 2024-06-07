@@ -271,12 +271,18 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
                 _notyfService.Error("Cannot find test with id: " + testId.ToString());
             }
 
-            test!.IsOpen = true;
+            test!.IsOpen =  test!.IsOpen == true ? false : true;
             try
             {
                 _context.Update(test);
                 await _context.SaveChangesAsync();
+                if (test.IsOpen)
+                {
                 _notyfService.Success("Test is open now");
+                } else
+                {
+                    _notyfService.Success("Test is close now");
+                }
             }
             catch (Exception ex)
             {
