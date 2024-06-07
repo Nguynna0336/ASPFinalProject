@@ -1,4 +1,6 @@
-﻿@model IPagedList<ASPFinalProject.Models.Question>
+﻿@using PagedList.Core
+@model IPagedList<ASPFinalProject.Models.Question>
+
 
 @{
     ViewData["Title"] = "getQuestions";
@@ -57,7 +59,7 @@
                 {
                     foreach (var item in Model)
                     {
-                        @* <tr>
+                         @* <tr>
                             <td>
                                 @item.TestTitle
                             </td>
@@ -79,7 +81,7 @@
                                 <a class="btn btn-success btn-tone m-r-5" asp-action="Delete"
                                    asp-route-id="@item.TestId">Delete</a>
                             </td>
-                        </tr> *@
+                        </tr>  *@
                     }
                 }
             </tbody>
