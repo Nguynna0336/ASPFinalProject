@@ -31,12 +31,14 @@ namespace ASPFinalProject.Controllers.QuestionController
             _userManager = userManager;
         }
 
-        // GET: TeacherQuestions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page =1)
         {
-            var examDbContext = _context.Questions.Include(q => q.Test);
-            return View(await examDbContext.ToListAsync());
-
+            var pageNumber = page;
+            List<Question> questions = await _context.Questions.Include(q => q.Test).ToListAsync();
+            PagedList<Question> model = new PagedList<Question> (questions.AsQueryable(), pageNumber, 10);
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageSize = 10;
+            return View(model);
         }
 
         // GET: TeacherQuestions/Details/5

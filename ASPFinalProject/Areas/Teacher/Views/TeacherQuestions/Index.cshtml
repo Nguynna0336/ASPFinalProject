@@ -1,77 +1,4 @@
-﻿@model IEnumerable<ASPFinalProject.Models.Question>
-
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OptionA)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OptionB)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OptionC)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OptionD)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Answer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Test)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OptionA)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OptionB)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OptionC)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OptionD)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Answer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Test.TestId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.QuestionsId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.QuestionsId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.QuestionsId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-
-
-@* @using PagedList.Core.Mvc
+﻿@using PagedList.Core.Mvc
 @model PagedList.Core.IPagedList<ASPFinalProject.Models.Question>
 @{
     ViewData["Title"] = "Index";
@@ -99,7 +26,7 @@
             <div class="col-lg-4 text-right">
                 <a class="btn btn-primary" asp-action="Create">
                     <i class="anticon anticon-plus-circle m-r-5"></i>
-                    <span>Add Test</span>
+                    <span>Add Question</span>
                 </a>
             </div>
         </div>
@@ -171,4 +98,4 @@
         </div>
     </div>
 </div>
-</div> *@
+</div>
