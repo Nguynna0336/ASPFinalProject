@@ -80,6 +80,7 @@ namespace ASPFinalProject.Controllers.QuestionController
                 ViewBag.TestId = test.TestId;
                 ViewBag.NumberOfQuestion = test.NumberOfQuestion;
                 return View();
+            }
         }
         
     
