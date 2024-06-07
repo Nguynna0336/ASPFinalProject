@@ -4,9 +4,6 @@
     ViewData["Title"] = "Details";
 }
 
-
-
-
 <!-- Content Wrapper START -->
 <div class="main-content">
     <div class="container">
@@ -51,16 +48,19 @@
                     <div class="row m-t-20 lh-2 d-flex">
                         <div class="col-sm-7">
                             <h4 class="p-l-10 m-t-10">Status</h4>
-                            @if(@Model!.IsOpen == true) {
-                            <div class="d-flex align-items-center">
-                                <div class="badge badge-success badge-dot m-r-10"></div>
-                                <div>Open</div>
-                            </div>
-                            } else {
-                            <div class="d-flex align-items-center">
-                                <div class="badge badge-erro badge-dot m-r-10"></div>
-                                <div>Close</div>
-                            </div>
+                            @if (@Model!.IsOpen == true)
+                            {
+                                <div class="d-flex align-items-center">
+                                    <div class="badge badge-success badge-dot m-r-10"></div>
+                                    <div>Open</div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center">
+                                    <div class="badge badge-erro badge-dot m-r-10"></div>
+                                    <div>Close</div>
+                                </div>
                             }
                         </div>
                         <div class="col-sm-5">
@@ -78,11 +78,11 @@
                             </div>
                         </div>
                     </div>
-                    <div >
-    <a asp-action="SetStatus" asp-route-id="@Model?.TestId">Open</a>
-    <a asp-action="Edit" asp-route-id="@Model?.TestId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+                    <div>
+                        @* <a asp-action="SetStatus" asp-route-id="@Model?.TestId">Open</a> *@
+                        <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model?.TestId">Edit</a> |
+                        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -92,4 +92,3 @@
 
 </div>
 <!-- Content Wrapper END -->
-
