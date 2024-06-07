@@ -33,8 +33,9 @@ builder.Services.AddIdentity<User, Role>(options =>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/User/Login";
+    options.LoginPath = "/Users/Login";
     options.AccessDeniedPath = "/";
+    options.ReturnUrlParameter = "ReturnUrl";
     options.LogoutPath = "/";
     options.ExpireTimeSpan = TimeSpan.FromDays(1);
     options.SlidingExpiration = true;

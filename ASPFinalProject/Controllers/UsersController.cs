@@ -219,6 +219,8 @@ namespace ASPFinalProject.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
+            string returnUrl = HttpContext.Request.Query["ReturnUrl"].ToString();
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
         [HttpPost]
@@ -227,10 +229,19 @@ namespace ASPFinalProject.Controllers
         {
             if(ModelState.IsValid)
             {
+                var returnUrl = HttpContext.Request.Query["ReturnUrl"].ToString();
                 var result = await _signInManager.PasswordSignInAsync(login.userName, login.password, login.rememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        _notifyService.Success("Login successfully");
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
             }
             _notifyService.Error("Invalid login attempt");
