@@ -11,6 +11,8 @@ using ASPFinalProject.DTOs.Question;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using Org.BouncyCastle.Crypto.Modes.Gcm;
+using PagedList.Core;
+using System.Drawing.Printing;
 
 namespace ASPFinalProject.Controllers.QuestionController
 {
@@ -236,15 +238,20 @@ namespace ASPFinalProject.Controllers.QuestionController
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> getQuestions([FromRoute(Name = "id")] int testId)
+        public async Task<IActionResult> getQuestions([FromRoute(Name = "id")] int testId, int page =1)
         {
+            var pageNumber = page;
             var test = await _context.Tests.FindAsync(testId);
             if (test == null)
             {
                 _notyfService.Error("Cannot find test with id: " + testId);
                 return RedirectToAction("Index", "TeacherTests");
             }
-            return View(await _context.Questions.Where(q => q.TestId == testId).ToListAsync());
+            List<Question> questions = await _context.Questions.Where(q => q.TestId == testId).ToListAsync();
+            PagedList<Question> model = new PagedList<Question> (questions.AsQueryable(), pageNumber, 10);
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageSize = 10;
+            return View(model);
         }
         private bool QuestionExists(int id)
         {

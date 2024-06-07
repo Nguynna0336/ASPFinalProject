@@ -35,7 +35,7 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
         public async Task<IActionResult> Index(int page = 1)
         {
             var pageNumber = page;
-            var pageSize = 2;
+            var pageSize = 5;
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser == null)
             {

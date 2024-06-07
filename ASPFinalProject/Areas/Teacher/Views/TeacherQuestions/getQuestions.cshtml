@@ -1,72 +1,94 @@
-﻿@model IEnumerable<ASPFinalProject.Models.Question>
+﻿@model IPagedList<ASPFinalProject.Models.Question>
 
 @{
     ViewData["Title"] = "getQuestions";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>getQuestions</h1>
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Default" asp-controller="Home" asp-action="index" class="breadcrumb-item">
+                <i class="anticon anticon-home m-r-5"></i>Home
+            </a>
+            <span class="breadcrumb-item active">Danh sách Bài Test : page </span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+                <div class="d-md-flex">
+                    <div class="m-b-10 m-r-15">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-right">
+                <a class="btn btn-primary" asp-action="Create">
+                    <i class="anticon anticon-plus-circle m-r-5"></i>
+                    <span>Add Test</span>
+                </a>
+            </div>
+        </div>
+        <table class="table table-hover e-commerce-table">
+            <thead>
+                <tr>
+                    <th>
+                        TestTitle
+                    </th>
+                    <th>
+                        Fullname Author
+                    </th>
+                    <th>
+                        Time
+                    </th>
+                    <th>
+                        NumberOfQuestion
+                    </th>
+                    <th>
+                        Description
+                    </th>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OptionA)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OptionB)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OptionC)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OptionD)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Answer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Test)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OptionA)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OptionB)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OptionC)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OptionD)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Answer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Test.TestId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.QuestionsId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.QuestionsId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.QuestionsId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        @* <tr>
+                            <td>
+                                @item.TestTitle
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    @item.Author.Fullname
+                                </div>
+                            </td>
+
+                            <td>@item.Time</td>
+                            <td style="margin-left: 100px;">@item.NumberOfQuestion</td>
+                            <td>@item.Description</td>
+
+                            <td class="text-right">
+                                <a class="btn btn-primary btn-tone m-r-5" asp-action="Details"
+                                   asp-route-id="@item.TestId">View</a>
+                                <a class="btn btn-secondary btn-tone m-r-5" asp-action="Edit"
+                                   asp-route-id="@item.TestId">Edit</a>
+                                <a class="btn btn-success btn-tone m-r-5" asp-action="Delete"
+                                   asp-route-id="@item.TestId">Delete</a>
+                            </td>
+                        </tr> *@
+                    }
+                }
+            </tbody>
+        </table>
+        <div aria-label="Page navigation example">
+            <ul class="pagination">
+                <pager class="pager-container" list="@Model" asp-area="Teacher" asp-controller="TeacherTests"
+                       asp-action="Index" />
+            </ul>
+        </div>
+    </div>
+</div>
