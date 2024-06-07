@@ -26,6 +26,8 @@ namespace ASPFinalProject.Models
 
         public int NumberOfQuestion { get; set; }
 
+        public int CurrentQuestions { get; set; } = 0;
+
         [ForeignKey("AuthorId")]
         public virtual User Author { get; set; }
 

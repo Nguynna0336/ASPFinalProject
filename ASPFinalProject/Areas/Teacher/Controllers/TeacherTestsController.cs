@@ -32,10 +32,10 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
         }
 
         // GET: Tests
-        public async Task<IActionResult> Index(int page=1)
+        public async Task<IActionResult> Index(int page = 1)
         {
             var pageNumber = page;
-            var pageSize = 2;
+            var pageSize = 5;
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser == null)
             {
@@ -74,7 +74,7 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
         // GET: Tests/Create
         public IActionResult Create()
         {
-           /*TestDTO testDTO = new TestDTO();*/
+            /*TestDTO testDTO = new TestDTO();*/
             return View();
         }
 
@@ -101,6 +101,7 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
                 };
                 _context.Add(test);
                 await _context.SaveChangesAsync();
+                _notyfService.Success("Test has been created");
                 return RedirectToAction(nameof(Index));
             }
             return View(testDTO);
@@ -119,7 +120,8 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
             {
                 return NotFound();
             }
-            TestDTO testdto = new TestDTO{
+            TestDTO testdto = new TestDTO
+            {
                 TestTitle = test.TestTitle,
                 Description = test.Description,
                 IsOpen = test.IsOpen,
@@ -137,46 +139,48 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TestDTO testDTO)
         {
-            var test = await _context.Tests
-                        .Include(t => t.Author)
-                        .FirstOrDefaultAsync(m => m.TestId == id);
-            if (test == null || id != test.TestId)
-            {
-                return NotFound();
-            }
-            if (test.AuthorId != _userManager.GetUserAsync(User).Id)
-            {
-                return Forbid();
-            }
-            test.TestTitle = testDTO.TestTitle;
-            test.Description = testDTO.Description;
-            test.IsOpen = testDTO.IsOpen;
-            test.Password = testDTO.Password;
-            test.Time = testDTO.Time;
-            test.NumberOfQuestion = testDTO.NumberOfQuestion;
-
             if (ModelState.IsValid)
             {
+                var test = await _context.Tests
+                        .Include(t => t.Author)
+                        .FirstOrDefaultAsync(m => m.TestId == id);
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    _notyfService.Information("Please login before edit");
+                    return Challenge();
+                }
+                if (test == null || id != test.TestId)
+                {
+                    return NotFound();
+                }
+                if (test.AuthorId != user.Id)
+                {
+                    _notyfService.Error("You dont have permission to edit this");
+                    return RedirectToAction(nameof(Index));
+                }
+                test.TestTitle = testDTO.TestTitle;
+                test.Description = testDTO.Description;
+                test.IsOpen = testDTO.IsOpen;
+                test.Password = testDTO.Password;
+                test.Time = testDTO.Time;
+                test.NumberOfQuestion = testDTO.NumberOfQuestion;
                 try
                 {
                     _context.Update(test);
                     await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TestExists(test.TestId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    _notyfService.Error("Something go wrong, please try again");
+                    return View(testDTO);
                 }
-                return RedirectToAction("Index", "TeacherTests");
+                _notyfService.Success("Test's details have been changed");
+                return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Fullname", test.AuthorId);
-            return View(test);
+            _notyfService.Error("Something wrong, check your details again before save");
+            return View(testDTO);
         }
 
         // GET: Tests/Delete/5
@@ -204,7 +208,7 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if(TestExists(id))
+            if (TestExists(id))
             {
                 return NotFound();
             }
@@ -223,15 +227,16 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
         {
             var test = await _context.Tests.FirstOrDefaultAsync(t => t.TestId == id);
             var user = await _userManager.GetUserAsync(User);
-            if(test == null)
+            if (test == null)
             {
                 return NotFound();
-            } else if(user == null || user.Id != test.AuthorId)
+            }
+            else if (user == null || user.Id != test.AuthorId)
             {
                 return Forbid();
             }
             var questionList = await _context.Questions.Where(q => q.TestId == test.TestId).ToListAsync();
-            if(questionList.Count < test.NumberOfQuestion || questionList == null)
+            if (questionList.Count < test.NumberOfQuestion || questionList == null)
             {
                 return BadRequest("You haven't add enough question. Required: " + test.NumberOfQuestion);
             }
@@ -241,24 +246,24 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> GetResult([FromRoute(Name = "id")]int testId)
+        public async Task<IActionResult> GetResult([FromRoute(Name = "id")] int testId)
         {
             var test = await _context.Tests.FindAsync(testId);
-            if( test == null )
+            if (test == null)
             {
                 return NotFound();
             }
             var user = _userManager.GetUserAsync(User);
-            if(user == null || user.Id != test.AuthorId)
+            if (user == null || user.Id != test.AuthorId)
             {
                 return Forbid();
             }
             var resultList = await _context.Results.Where(r => r.TestId == testId).ToListAsync();
             return View(resultList);
         }
- 
+
         [HttpGet]
-        public async Task<IActionResult> SetStatus([FromRoute(Name = "id")]int testId)
+        public async Task<IActionResult> SetStatus([FromRoute(Name = "id")] int testId)
         {
             var test = await _context.Tests.FindAsync(testId);
             if (test == null)
@@ -266,12 +271,18 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
                 _notyfService.Error("Cannot find test with id: " + testId.ToString());
             }
 
-            test!.IsOpen = true;
+            test!.IsOpen =  test!.IsOpen == true ? false : true;
             try
             {
                 _context.Update(test);
                 await _context.SaveChangesAsync();
+                if (test.IsOpen)
+                {
                 _notyfService.Success("Test is open now");
+                } else
+                {
+                    _notyfService.Success("Test is close now");
+                }
             }
             catch (Exception ex)
             {

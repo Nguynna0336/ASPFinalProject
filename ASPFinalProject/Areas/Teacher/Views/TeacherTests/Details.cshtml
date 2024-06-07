@@ -39,6 +39,11 @@
                                     <span class="font-weight-semibold text-dark mr-4">Number Of Question </span>
                                 </div>
                                 <div class="float-right">@Html.DisplayFor(model => model.NumberOfQuestion)</div>
+                                <br>
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">Current questions </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.CurrentQuestions)</div>
                             </address>
                         </div>
                         <div class="float-right">
@@ -58,7 +63,7 @@
                             else
                             {
                                 <div class="d-flex align-items-center">
-                                    <div class="badge badge-erro badge-dot m-r-10"></div>
+                                    <div class="badge badge-error badge-dot m-r-10"></div>
                                     <div>Close</div>
                                 </div>
                             }
@@ -79,9 +84,10 @@
                         </div>
                     </div>
                     <div>
-                        @* <a asp-action="SetStatus" asp-route-id="@Model?.TestId">Open</a> *@
-                        <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model?.TestId">Edit</a> |
+                        <a asp-action="SetStatus" asp-route-id="@Model?.TestId">Change status</a>
                         <a asp-action="Index" class="btn btn-primary">Back to List</a>
+                        <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model?.TestId">Edit</a> |
+                        <a asp-action="Create" asp-controller="TeacherQuestions" asp-route-id="@Model?.TestId" class="btn btn-primary">Add questions</a>
                     </div>
                 </div>
             </div>

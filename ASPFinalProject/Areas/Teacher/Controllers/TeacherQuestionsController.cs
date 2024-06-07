@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Authorization;
 using ASPFinalProject.DTOs.Question;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Identity;
+using Org.BouncyCastle.Crypto.Modes.Gcm;
+using PagedList.Core;
+using System.Drawing.Printing;
 
 namespace ASPFinalProject.Controllers.QuestionController
 {
@@ -33,7 +36,7 @@ namespace ASPFinalProject.Controllers.QuestionController
         {
             var examDbContext = _context.Questions.Include(q => q.Test);
             return View(await examDbContext.ToListAsync());
-            
+
         }
 
         // GET: TeacherQuestions/Details/5
@@ -56,9 +59,25 @@ namespace ASPFinalProject.Controllers.QuestionController
         }
 
         // GET: TeacherQuestions/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create([FromRoute(Name = "id")] int TestId)
         {
-            return View();
+            var test = await _context.Tests.FindAsync(TestId);
+            if (test == null)
+            {
+                _notyfService.Error("Cannot find test with id: " + TestId);
+                return RedirectToAction("Index", "TeacherTests");
+            }
+            else
+            {
+                if(test.CurrentQuestions == test.NumberOfQuestion)
+                {
+                    _notyfService.Error("Cannot add more questions");
+                    return RedirectToAction("Index", "TeacherTests");
+                }
+                ViewBag.TestId = test.TestId;
+                ViewBag.NumberOfQuestion = test.NumberOfQuestion;
+                return View();
+            }
         }
 
         // POST: TeacherQuestions/Create
@@ -66,11 +85,17 @@ namespace ASPFinalProject.Controllers.QuestionController
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int testId, List<QuestionDTO> questionDTOs)
+        public async Task<IActionResult> Create([FromRoute(Name = "id")] int testId, List<QuestionDTO> questionDTOs)
         {
             if (ModelState.IsValid)
             {
                 int count = 0;
+                var test = await _context.Tests.FindAsync(testId);
+                if (test == null)
+                {
+                    _notyfService.Error("Cannot find test with id: " + testId);
+                    return RedirectToAction("Index", "TeacherTests");
+                }
                 List<QuestionDTO> error = new List<QuestionDTO>();
                 foreach (QuestionDTO questionDTO in questionDTOs)
                 {
@@ -84,6 +109,7 @@ namespace ASPFinalProject.Controllers.QuestionController
                             OptionC = questionDTO.OptionC,
                             OptionD = questionDTO.OptionD,
                             Answer = questionDTO.Answer,
+                            TestId = testId
                         };
                         _context.Add(question);
                         await _context.SaveChangesAsync();
@@ -94,14 +120,18 @@ namespace ASPFinalProject.Controllers.QuestionController
                         error.Add(questionDTO);
                     }
                 }
-                if(error.Count > 0)
+                test.CurrentQuestions += count;
+                _context.Update(test);
+                await _context.SaveChangesAsync();
+                if (error.Count > 0)
                 {
                     _notyfService.Error($"{count} questions have been added, {error.Count} questions couldn't be added, please try again");
                     return View(error);
-                } else
+                }
+                else
                 {
                     _notyfService.Success($"{count} questions have been added");
-                    return RedirectToAction("Deatails", new {id = testId});
+                    return RedirectToAction(nameof(getQuestions), new { id = testId });
                 }
 
             }
@@ -136,9 +166,9 @@ namespace ASPFinalProject.Controllers.QuestionController
                 try
                 {
                     var question = await _context.Questions.FindAsync(id);
-                    if(question == null)
+                    if (question == null)
                     {
-                        _notyfService.Error("Cannot find question with id: " +  id);
+                        _notyfService.Error("Cannot find question with id: " + id);
                         return View(questionDTO);
                     }
                     question.Description = questionDTO.Description;
@@ -188,12 +218,13 @@ namespace ASPFinalProject.Controllers.QuestionController
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var user = _userManager.GetUserAsync(User);
-            var question = await _context.Questions.Include(t => t.Test).FirstOrDefaultAsync(q => q.QuestionsId ==id);
-            if(question == null)
+            var question = await _context.Questions.Include(t => t.Test).FirstOrDefaultAsync(q => q.QuestionsId == id);
+            if (question == null)
             {
                 _notyfService.Error("Cannot find question with id: " + id);
                 return View();
-            } else if(question.Test.AuthorId != user.Id)
+            }
+            else if (question.Test.AuthorId != user.Id)
             {
                 _notyfService.Warning("You dont have permission to delete this question. Only author of its test can delete this questions");
                 return RedirectToAction(nameof(Index));
@@ -207,15 +238,20 @@ namespace ASPFinalProject.Controllers.QuestionController
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> getQuestions(int testId)
+        public async Task<IActionResult> getQuestions([FromRoute(Name = "id")] int testId, int page =1)
         {
+            var pageNumber = page;
             var test = await _context.Tests.FindAsync(testId);
             if (test == null)
             {
-                _notyfService.Error("Cannot find test with id: " +  testId);
+                _notyfService.Error("Cannot find test with id: " + testId);
                 return RedirectToAction("Index", "TeacherTests");
             }
-            return View(await _context.Questions.Where(q => q.TestId == testId).ToListAsync());
+            List<Question> questions = await _context.Questions.Where(q => q.TestId == testId).ToListAsync();
+            PagedList<Question> model = new PagedList<Question> (questions.AsQueryable(), pageNumber, 10);
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageSize = 10;
+            return View(model);
         }
         private bool QuestionExists(int id)
         {
