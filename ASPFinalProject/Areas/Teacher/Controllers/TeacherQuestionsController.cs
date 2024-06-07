@@ -33,6 +33,7 @@ namespace ASPFinalProject.Controllers.QuestionController
         {
             var examDbContext = _context.Questions.Include(q => q.Test);
             return View(await examDbContext.ToListAsync());
+            
         }
 
         // GET: TeacherQuestions/Details/5
@@ -100,7 +101,7 @@ namespace ASPFinalProject.Controllers.QuestionController
                 } else
                 {
                     _notyfService.Success($"{count} questions have been added");
-                    return RedirectToAction("Details", new {id = testId});
+                    return RedirectToAction("Deatails", new {id = testId});
                 }
 
             }
