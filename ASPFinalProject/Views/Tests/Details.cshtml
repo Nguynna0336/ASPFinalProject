@@ -4,69 +4,108 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<!-- Content Wrapper START -->
+<div class="main-content">
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <div id="invoice" class="p-h-30">
+                    <div class="m-t-15 lh-2">
+                        <div class="inline-block" style="font-size: 18px;">
+                            <img class="img-fluid" src="~/assets/images/logo/logo.png" alt="">
+                            <address class="p-l-10">
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">Test Title </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.TestTitle)</div>
+                                <br>
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">Description </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.Description)</div>
+                                <br>
 
-<div>
-    <h4>Test</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TestTitle)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TestTitle)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsOpen)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsOpen)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Time)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Time)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NumberOfQuestion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NumberOfQuestion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Author.Fullname)
-        </dd>
-    </dl>
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">Author </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.Author.Fullname)</div>
+                                <br>
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">Time </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.Time)</div>
+                                <br>
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">Number Of Question </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.NumberOfQuestion)</div>
+                                <br>
+                            </address>
+                        </div>
+                        <div class="float-right">
+                            <h2>Detail Test</h2>
+                        </div>
+                    </div>
+                    <div>
+                        <a asp-action="Enroll" class="btn btn-primary">Back to List</a>
+                        @if (ViewBag.Result == null)
+                        {
+                            <form asp-action="Enroll" method="post" class="ml-3">
+                                <div class="form-group" style="display: none;">
+                                    <input id="TestId" name="testId" value="@Model.TestId" class="form-control" />
+                                </div>
+                                <div class="form-group" style="display: none">
+                                    <input id="UserId" name="userId" value="@ViewBag.UserId" class="form-control" />
+                                </div>
+                                @if (Model.Password != null)
+                                {
+                                    <div class="form-group" style="display: none;">
+                                        <input id="Password" name="password" value="@Model.Password" class="form-control" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="modal fade" id="exampleModal">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                    <button type="button" class="close" data-dismiss="modal">
+                                                        <i class="anticon anticon-close"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ...
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">cancle</button>
+                                                    <button type="button" class="btn btn-primary">apply</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <button class="btn btn-success btn-tone m-r-5" type="submit" asp-action="Enroll" data-toggle="modal" data-target="#exampleModal">Enroll</button>
+                            </form>
+                        }
+                        else if (ViewBag.Result.Score == -1)
+                        {
+                            <a asp-action="UnEnroll" class="btn btn-warning" asp-route-testId="@Model?.TestId" asp-route-userId="@ViewBag.Result.UserId">UnEnroll</a>
+                        }
+                        else
+                        {
+                            <div class="text-dark text-uppercase d-inline-block">
+                                <span class="font-weight-semibold text-dark mr-4">Score: </span>
+                            </div>
+                            <div class="float-right">@ViewBag.Result.Score</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.TestId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<!-- Content Wrapper END -->

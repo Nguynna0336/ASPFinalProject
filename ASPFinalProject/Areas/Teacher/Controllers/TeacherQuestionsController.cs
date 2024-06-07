@@ -69,18 +69,19 @@ namespace ASPFinalProject.Controllers.QuestionController
             }
             else
             {
-                if(test.CurrentQuestions == test.NumberOfQuestion)
-                if(test.CurrentQuestions >= test.NumberOfQuestion)
-                {
-                    _notyfService.Error("Cannot add more questions");
-                    return RedirectToAction("Index", "TeacherTests");
-                }
+                if (test.CurrentQuestions == test.NumberOfQuestion)
+                    if (test.CurrentQuestions >= test.NumberOfQuestion)
+                    {
+                        _notyfService.Error("Cannot add more questions");
+                        return RedirectToAction("Index", "TeacherTests");
+                    }
                 ViewBag.TestId = test.TestId;
                 ViewBag.NumberOfQuestion = test.NumberOfQuestion;
                 return View();
+            }
         }
-        
-    
+
+
         // POST: TeacherQuestions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -102,7 +103,7 @@ namespace ASPFinalProject.Controllers.QuestionController
                 {
                     try
                     {
-                        if(test.CurrentQuestions < test.NumberOfQuestion)
+                        if (test.CurrentQuestions < test.NumberOfQuestion)
                         {
                             Question question = new()
                             {
@@ -118,10 +119,11 @@ namespace ASPFinalProject.Controllers.QuestionController
                             test.CurrentQuestions++;
                             await _context.SaveChangesAsync();
                             count++;
-                        } else
+                        }
+                        else
                         {
                             _notyfService.Error("Cannot add more question");
-                            return RedirectToAction(nameof(getQuestions), new { id = testId });                         
+                            return RedirectToAction(nameof(getQuestions), new { id = testId });
                         }
                     }
                     catch (Exception ex)
@@ -245,7 +247,7 @@ namespace ASPFinalProject.Controllers.QuestionController
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> getQuestions([FromRoute(Name = "id")] int testId, int page =1)
+        public async Task<IActionResult> getQuestions([FromRoute(Name = "id")] int testId, int page = 1)
         {
             var pageNumber = page;
             var test = await _context.Tests.FindAsync(testId);
@@ -255,7 +257,7 @@ namespace ASPFinalProject.Controllers.QuestionController
                 return RedirectToAction("Index", "TeacherTests");
             }
             List<Question> questions = await _context.Questions.Where(q => q.TestId == testId).ToListAsync();
-            PagedList<Question> model = new PagedList<Question> (questions.AsQueryable(), pageNumber, 10);
+            PagedList<Question> model = new PagedList<Question>(questions.AsQueryable(), pageNumber, 10);
             ViewBag.CurrentPage = pageNumber;
             ViewBag.PageSize = 10;
             ViewBag.testId = test.TestId;

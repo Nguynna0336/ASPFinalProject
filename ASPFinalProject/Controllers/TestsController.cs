@@ -69,9 +69,13 @@ namespace ASPFinalProject.Controllers.TestController
             var test = await _context.Tests.FirstOrDefaultAsync(t => t.TestId == testId);
             if(test == null) {
                 return NotFound(); 
-            } else if(test.Password != null && test.Password.Equals(password))
+            } else if(test.Password != null )
             {
+                if(password == null || !test.Password.Equals(password))
+                {
                 _notyfService.Error("Wrong password, please try again");
+                return RedirectToAction(nameof(Enroll));
+                }
             }
             if(user == null || userId != user.Id)
             {
@@ -86,7 +90,7 @@ namespace ASPFinalProject.Controllers.TestController
             {
                 UserId = userId,
                 TestId = testId,
-                Score = 0
+                Score = -1
             };
             try
             {
@@ -110,16 +114,13 @@ namespace ASPFinalProject.Controllers.TestController
             }
             var test = await _context.Tests.FirstOrDefaultAsync(t => t.TestId == id);
             var result = await _context.Results.FirstOrDefaultAsync(t =>  t.TestId == id);
-            if(test == null || result == null)
+            if(test == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Enroll));
             }
             ViewBag.Test = test;
-            if(!test.IsOpen)
-            {
-                ViewBag.Result = result;
-            }
-            return View();
+            ViewBag.Result = result;
+            return View(test);
         }
 
         public async Task<IActionResult> UnEnroll(int testId, int userId)
@@ -144,22 +145,23 @@ namespace ASPFinalProject.Controllers.TestController
             {
                 return BadRequest(ex.Message);
             }
+
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> StartTest(int id)
         {
-            var user = _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
             var result = await _context.Results.FirstOrDefaultAsync(r => r.TestId == id && r.UserId == user.Id);
             var test = await _context.Tests.FirstOrDefaultAsync(t => t.TestId == id);
             if(test == null || !test.IsOpen)
             {
-                return BadRequest("Test is not available now, try later");
+                _notyfService.Error("Test is not available now, try later");
+                return RedirectToAction("Index", "Home");
             }
             if(result == null)
             {
-                _notyfService.Success(user.Id + " and " + id);
-                // return BadRequest("You didnt enroll this test");
+                _notyfService.Error("You didnt enroll this test");
                 return RedirectToAction("Index", "Home");
             }
             var questionList = await _context.Questions.Where(q => q.TestId == id)

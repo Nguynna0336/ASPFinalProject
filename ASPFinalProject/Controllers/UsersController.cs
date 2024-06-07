@@ -85,7 +85,7 @@ namespace ASPFinalProject.Controllers
                     Email = register.Email, 
                     Fullname = register.Fullname, 
                     SecurityStamp = Guid.NewGuid().ToString(), 
-                    Role = (await _roleManager.FindByIdAsync(2.ToString()))! };
+                    Role = (await _roleManager.FindByIdAsync(3.ToString()))! };
                 var result = await _userManager.CreateAsync(user, register.Password);
                 if(result.Succeeded)
                 {
