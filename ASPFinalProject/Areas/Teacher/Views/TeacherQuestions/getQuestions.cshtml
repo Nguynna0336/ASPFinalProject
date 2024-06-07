@@ -27,31 +27,39 @@
                 </div>
             </div>
             <div class="col-lg-4 text-right">
-                <a class="btn btn-primary" asp-action="Create">
+                <a asp-action="Create" asp-controller="TeacherQuestions" asp-route-id="@ViewBag.testId" class="btn btn-primary" >
                     <i class="anticon anticon-plus-circle m-r-5"></i>
-                    <span>Add Test</span>
+                    <span>Add Question</span>
                 </a>
+            </div>
+            <div class="col-lg-4 text-left">
+                <h3>Danh sách câu hỏi của @ViewBag.TestTitle</h3>
             </div>
         </div>
         <table class="table table-hover e-commerce-table">
             <thead>
                 <tr>
                     <th>
-                        TestTitle
-                    </th>
-                    <th>
-                        Fullname Author
-                    </th>
-                    <th>
-                        Time
-                    </th>
-                    <th>
-                        NumberOfQuestion
+                        Test Title
                     </th>
                     <th>
                         Description
                     </th>
-
+                    <th>
+                        OptionA
+                    </th>
+                    <th>
+                        OptionB
+                    </th>
+                    <th>
+                        OptionC
+                    </th>
+                    <th>
+                        OptionD
+                    </th>
+                    <th>
+                        Answer
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -59,19 +67,21 @@
                 {
                     foreach (var item in Model)
                     {
-                         @* <tr>
+                         <tr>
                             <td>
-                                @item.TestTitle
+                                @item.Test.TestTitle
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    @item.Author.Fullname
+                                    @item.Description
                                 </div>
                             </td>
 
-                            <td>@item.Time</td>
-                            <td style="margin-left: 100px;">@item.NumberOfQuestion</td>
-                            <td>@item.Description</td>
+                            <td>@item.OptionA</td>
+                            <td style="margin-left: 100px;">@item.OptionB</td>
+                            <td>@item.OptionC</td>
+                            <td>@item.OptionD</td>
+                            <td>@item.Answer</td>
 
                             <td class="text-right">
                                 <a class="btn btn-primary btn-tone m-r-5" asp-action="Details"
@@ -81,7 +91,7 @@
                                 <a class="btn btn-success btn-tone m-r-5" asp-action="Delete"
                                    asp-route-id="@item.TestId">Delete</a>
                             </td>
-                        </tr>  *@
+                        </tr> 
                     }
                 }
             </tbody>

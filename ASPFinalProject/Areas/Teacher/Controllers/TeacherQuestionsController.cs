@@ -69,10 +69,12 @@ namespace ASPFinalProject.Controllers.QuestionController
             }
             else
             {
+                if(test.CurrentQuestions == test.NumberOfQuestion)
                 if(test.CurrentQuestions >= test.NumberOfQuestion)
                 {
                     _notyfService.Error("Cannot add more questions");
                     return RedirectToAction("Index", "TeacherTests");
+                }
                 }
                 ViewBag.TestId = test.TestId;
                 ViewBag.NumberOfQuestion = test.NumberOfQuestion;
@@ -257,6 +259,8 @@ namespace ASPFinalProject.Controllers.QuestionController
             PagedList<Question> model = new PagedList<Question> (questions.AsQueryable(), pageNumber, 10);
             ViewBag.CurrentPage = pageNumber;
             ViewBag.PageSize = 10;
+            ViewBag.testId = test.TestId;
+            ViewBag.TestTitle = test.TestTitle;
             return View(model);
         }
         private bool QuestionExists(int id)

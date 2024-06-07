@@ -85,11 +85,11 @@ namespace ASPFinalProject.Controllers
                     Email = register.Email, 
                     Fullname = register.Fullname, 
                     SecurityStamp = Guid.NewGuid().ToString(), 
-                    Role = (await _roleManager.FindByIdAsync(3.ToString()))! };
+                    Role = (await _roleManager.FindByIdAsync(2.ToString()))! };
                 var result = await _userManager.CreateAsync(user, register.Password);
                 if(result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Teacher");
+                    await _userManager.AddToRoleAsync(user, "Student");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _notifyService.Success("You have regiters successfully");
                     return RedirectToAction("Index", "Home");
@@ -257,6 +257,7 @@ namespace ASPFinalProject.Controllers
 
         public IActionResult ChangePassword()
         {
+
             return View();
         }
         [HttpPost]
@@ -270,7 +271,7 @@ namespace ASPFinalProject.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("Login", "User");
             }
 
             var result = await _userManager.ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
