@@ -69,11 +69,11 @@ namespace ASPFinalProject.Controllers.QuestionController
             }
             else
             {
-                /*if(test.CurrentQuestions == test.NumberOfQuestion)
+                if(test.CurrentQuestions >= test.NumberOfQuestion)
                 {
                     _notyfService.Error("Cannot add more questions");
                     return RedirectToAction("Index", "TeacherTests");
-                }*/
+                }
                 ViewBag.TestId = test.TestId;
                 ViewBag.NumberOfQuestion = test.NumberOfQuestion;
                 return View();
@@ -101,26 +101,33 @@ namespace ASPFinalProject.Controllers.QuestionController
                 {
                     try
                     {
-                        Question question = new()
+                        if(test.CurrentQuestions < test.NumberOfQuestion)
                         {
-                            Description = questionDTO.Description,
-                            OptionA = questionDTO.OptionA,
-                            OptionB = questionDTO.OptionB,
-                            OptionC = questionDTO.OptionC,
-                            OptionD = questionDTO.OptionD,
-                            Answer = questionDTO.Answer,
-                            TestId = testId
-                        };
-                        _context.Add(question);
-                        await _context.SaveChangesAsync();
-                        count++;
+                            Question question = new()
+                            {
+                                Description = questionDTO.Description,
+                                OptionA = questionDTO.OptionA,
+                                OptionB = questionDTO.OptionB,
+                                OptionC = questionDTO.OptionC,
+                                OptionD = questionDTO.OptionD,
+                                Answer = questionDTO.Answer,
+                                TestId = testId
+                            };
+                            _context.Add(question);
+                            test.CurrentQuestions++;
+                            await _context.SaveChangesAsync();
+                            count++;
+                        } else
+                        {
+                            _notyfService.Error("Cannot add more question");
+                            return RedirectToAction(nameof(getQuestions), new { id = testId });                         
+                        }
                     }
                     catch (Exception ex)
                     {
                         error.Add(questionDTO);
                     }
                 }
-                /*test.CurrentQuestions += count;*/
                 _context.Update(test);
                 await _context.SaveChangesAsync();
                 if (error.Count > 0)
@@ -133,7 +140,6 @@ namespace ASPFinalProject.Controllers.QuestionController
                     _notyfService.Success($"{count} questions have been added");
                     return RedirectToAction(nameof(getQuestions), new { id = testId });
                 }
-
             }
             return View(questionDTOs);
         }

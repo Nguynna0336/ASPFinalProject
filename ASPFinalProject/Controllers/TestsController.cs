@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using ASPFinalProject.DTOs.Submit;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using PagedList.Core;
+using System.Drawing.Printing;
 
 namespace ASPFinalProject.Controllers.TestController
 {
@@ -28,30 +30,35 @@ namespace ASPFinalProject.Controllers.TestController
         }
 
         // GET: StudentTests
-        [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
+            var pageNumber = page;
+            var pageSize = 10;
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return Challenge();
             }
             var enrolledTest = _context.Results.Where(t => t.UserId == user.Id);
-            var examDbContext = _context.Tests.Where(t => enrolledTest.Any(r => r.TestId == t.TestId));
-            return View(await examDbContext.ToListAsync());
+            List<Test> tests = await _context.Tests.Where(t => enrolledTest.Any(r => r.TestId == t.TestId)).ToListAsync();
+            PagedList<Test> models = new PagedList<Test>(tests.AsQueryable(), pageNumber, pageSize );
+            return View(models);
         }
         
-        public async Task<IActionResult> Enroll()
+        public async Task<IActionResult> Enroll(int page = 1)
         {
+            var pageNumber = page;
+            var pageSize = 10;
             var user = await _userManager.GetUserAsync(User);
             if(user == null)
             {
                 _notyfService.Warning("You have to login before enroll!");
                 return Challenge();
             }
-            var enrolledTest = _context.Results.Where( t => t.UserId == user.Id);
-            var unEnrolledTest = _context.Tests.Where(t => !enrolledTest.Any(r => r.TestId == t.TestId));
-            return View(unEnrolledTest);
+            var enrolledTest = _context.Results.Where(t => t.UserId == user.Id);
+            List<Test> tests = await _context.Tests.Where(t => !enrolledTest.Any(r => r.TestId == t.TestId)).ToListAsync();
+            PagedList<Test> models = new PagedList<Test>(tests.AsQueryable(), pageNumber, pageSize);
+            return View(models);
         }
 
         [HttpPost]
