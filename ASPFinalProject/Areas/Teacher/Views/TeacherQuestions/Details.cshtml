@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+@* <h1>Details</h1>
 
 <div>
     <h4>Question</h4>
@@ -57,4 +57,71 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.QuestionsId">Edit</a> |
     <a asp-action="Index">Back to List</a>
+</div> *@
+
+<div class="main-content">
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <div id="invoice" class="p-h-30">
+                    <div class="m-t-15 lh-2">
+                        <div class="inline-block" style="font-size: 18px;">
+                            <img class="img-fluid" src="~/assets/images/logo/logo.png" alt="">
+                            <address class="p-l-10">
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">Description </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.Description)</div>
+                                <br>
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">OptionA </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.OptionA)</div>
+                                <br>
+
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">OptionB </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.OptionB)</div>
+                                <br>
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">OptionC </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.OptionC)</div>
+                                <br>
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">OptionD </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.OptionD)</div>
+                                <br>
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">Answer </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.Answer)</div>
+                                <br>
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark mr-4">Test </span>
+                                </div>
+                                <div class="float-right">@Html.DisplayFor(model => model.TestId)</div>
+                            </address>
+                        </div>
+
+                        <div class="float-right">
+                            <h2>Detail Test</h2>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        @* <a asp-action="SetStatus" asp-route-id="@Model?.TestId">Open</a> *@
+                        <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model?.TestId">Edit</a> |
+                        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
 </div>

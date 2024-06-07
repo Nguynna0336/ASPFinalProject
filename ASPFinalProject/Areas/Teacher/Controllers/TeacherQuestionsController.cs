@@ -69,11 +69,11 @@ namespace ASPFinalProject.Controllers.QuestionController
             }
             else
             {
-                if(test.CurrentQuestions == test.NumberOfQuestion)
+                /*if(test.CurrentQuestions == test.NumberOfQuestion)
                 {
                     _notyfService.Error("Cannot add more questions");
                     return RedirectToAction("Index", "TeacherTests");
-                }
+                }*/
                 ViewBag.TestId = test.TestId;
                 ViewBag.NumberOfQuestion = test.NumberOfQuestion;
                 return View();
@@ -120,7 +120,7 @@ namespace ASPFinalProject.Controllers.QuestionController
                         error.Add(questionDTO);
                     }
                 }
-                test.CurrentQuestions += count;
+                /*test.CurrentQuestions += count;*/
                 _context.Update(test);
                 await _context.SaveChangesAsync();
                 if (error.Count > 0)
