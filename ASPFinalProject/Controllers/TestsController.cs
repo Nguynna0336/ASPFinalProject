@@ -167,6 +167,7 @@ namespace ASPFinalProject.Controllers.TestController
             var questionList = await _context.Questions.Where(q => q.TestId == id)
                                                         .Select(q => new {q.Description, q.OptionA, q.OptionB, q.OptionC, q.OptionD})
                                                         .ToListAsync();
+            ViewBag.testId = test.TestId;
             ViewBag.QuestionList = questionList;
             ViewBag.Time = test.Time;
             return View();
