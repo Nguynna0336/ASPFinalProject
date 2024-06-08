@@ -9,12 +9,14 @@
     <div class="container">
 @using (Html.BeginForm("Submit", "Tests", FormMethod.Post))
 {
+    <input  name="testId" value="@ViewBag.TestId" type="hidden"/>
+    <input name="userId" value="@ViewBag.UserId" type="hidden"/>
     int index = 0;
-    @foreach (var item in ViewBag.QuestionList)
+            @foreach (var item in ViewBag.QuestionList)
     {
         <div class="card">
             <div class="card-body">
-                <h5>Câu @index</h5>
+                <h5>Câu @(index+1)</h5>
                 @if (Model != null && Model.Count > index)
                 {
                     @Html.HiddenFor(model => model[index].questionId, new { Value = item.QuestionsId })

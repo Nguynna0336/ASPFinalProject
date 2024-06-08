@@ -170,6 +170,8 @@ namespace ASPFinalProject.Controllers.TestController
             ViewBag.testId = test.TestId;
             ViewBag.QuestionList = questionList;
             ViewBag.Time = test.Time;
+            ViewBag.TestId = test.TestId;
+            ViewBag.UserId = user.Id;
             return View();
         }
 
@@ -184,6 +186,7 @@ namespace ASPFinalProject.Controllers.TestController
             }
             if(user == null || user.Id != userId)
             {
+                _notyfService.Error("You cannot submit");
                 return Forbid();
             }
             var result = await _context.Results.FirstOrDefaultAsync(r => r.TestId == testId && r.UserId ==  userId);
@@ -216,6 +219,7 @@ namespace ASPFinalProject.Controllers.TestController
                 ModelState.AddModelError(string.Empty, "Something go wrong: " + ex.Message);
                 return View(ex.Message);
             }
+            _notyfService.Success("Summit successfully");
             return RedirectToAction(nameof(Index));
         }
 
