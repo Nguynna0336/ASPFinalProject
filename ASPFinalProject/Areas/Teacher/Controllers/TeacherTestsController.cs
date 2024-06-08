@@ -15,7 +15,7 @@ using System.Drawing.Printing;
 
 namespace ASPFinalProject.Areas.Teacher.Controllers
 {
-    [Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher, Admin")]
     [Area("Teacher")]
     public class TeacherTestsController : Controller
     {
