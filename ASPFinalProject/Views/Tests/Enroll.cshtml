@@ -8,120 +8,119 @@
 <div class="page-header">
     <div class="header-sub-title">
         <nav class="breadcrumb breadcrumb-dash">
-            <a asp-area="Default" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i
-                    class="anticon anticon-home m-r-5"></i>Home</a>
-            <span class="breadcrumb-item active">Danh sách Bài Test : page </span>
+            <a asp-area="Default" asp-controller="Home" asp-action="index" class="breadcrumb-item">
+                <i class="anticon anticon-home m-r-5"></i>Home
+            </a>
+            <span class="breadcrumb-item active">Enroll </span>
         </nav>
     </div>
 </div>
-<div class="card">
-    <div class="card-body">
-        <div class="row m-b-30">
-            <div class="col-lg-8">
-                <div class="d-md-flex">
-                    <div class="m-b-10 m-r-15">
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="row m-b-30">
+                <div class="col-lg-8">
+                    <div class="d-md-flex">
+                        <div class="m-b-10 m-r-15">
+                            <h2>Enroll Test</h2>
+                        </div>
                     </div>
                 </div>
+                <div class="col-lg-4 text-left">
+                    
+                </div>
             </div>
-            <div class="col-lg-4 text-right">
-                <a class="btn btn-primary" asp-action="Index">
-                    <i class="anticon anticon-plus-circle m-r-5"></i>
-                    <span>Home</span>
-                </a>
-            </div>
-            <div class="col-lg-4 text-left">
-                <h3>Enroll Test</h3>
-            </div>
-        </div>
-        <table class="table table-hover e-commerce-table">
-            <thead>
-                <tr>
-                    <th>
-                        TestTitle
-                    </th>
-                    <th>
-                        Fullname Author
-                    </th>
-                    <th>
-                        Time
-                    </th>
-                    <th>
-                       NumberOfQuestion
-                    </th>
-                    <th>
-                        Description
-                    </th>
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>
+                            Test Title
+                        </th>
+                        <th>
+                            Fullname Author
+                        </th>
+                        <th>
+                            Time
+                        </th>
+                        <th>
+                            Number of question
+                        </th>
+                        <th>
+                            Description
+                        </th>
 
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model != null)
-                {
-                    foreach (var item in Model)
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
                     {
-                        <tr>
-                            <td>
-                                @item.TestTitle
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    @item.Author.Fullname
-                                </div>
-                            </td>
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @item.TestTitle
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        @item.Author.Fullname
+                                    </div>
+                                </td>
 
-                            <td>@item.Time</td>
-                            <td style="margin-left: 100px;">@item.NumberOfQuestion</td>
-                            <td>@item.Description</td>
+                                <td>@item.Time</td>
+                                <td style="margin-left: 100px;">@item.NumberOfQuestion</td>
+                                <td>@item.Description</td>
 
-                            <td class="text-right d-flex">
-                                <a class="btn btn-primary btn-tone m-r-5" asp-action="Details"
-                                    asp-route-id="@item.TestId">View</a>
-                                <form asp-action="Enroll" method="post" class="ml-3">
-                                    <div class="form-group" style="display: none;">
-				                        <input id="TestId" name="testId" value="@item.TestId" class="form-control" />
-			                        </div>
-                                    <div class="form-group" style="display: none">
-				                        <input id="UserId" name="userId" value="@ViewBag.UserId" class="form-control" />
-			                        </div>
-                                    @if(item.Password != null) {
+                                <td class="text-right d-flex">
+                                    <a class="btn btn-primary btn-tone m-r-5" asp-action="Details"
+                                       asp-route-id="@item.TestId">View</a>
+                                    <form asp-action="Enroll" method="post" class="ml-3">
                                         <div class="form-group" style="display: none;">
-				                            <input id="Password" name="password" value="@item.Password" class="form-control" />
-			                            </div>
-                                    }
-                                    else {
-                                        <div class="modal fade" id="exampleModal">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                                        <button type="button" class="close" data-dismiss="modal">
-                                                            <i class="anticon anticon-close"></i>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        ...
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">cancle</button>
-                                                        <button type="button" class="btn btn-primary">apply</button>
+                                            <input id="TestId" name="testId" value="@item.TestId" class="form-control" />
+                                        </div>
+                                        <div class="form-group" style="display: none">
+                                            <input id="UserId" name="userId" value="@ViewBag.UserId" class="form-control" />
+                                        </div>
+                                        @if (item.Password != null)
+                                        {
+                                            <div class="form-group" style="display: none;">
+                                                <input id="Password" name="password" value="@item.Password" class="form-control" />
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="modal fade" id="exampleModal">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                <i class="anticon anticon-close"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+                                                            <button type="button" class="btn btn-primary">Enroll</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    }
-                                    <button class="btn btn-success btn-tone m-r-5" type="submit" asp-action="Enroll"  data-toggle="modal" data-target="#exampleModal">Enroll</button>
-                                </form>
-                            </td>
-                        </tr>
+                                        }
+                                        <button class="btn btn-success btn-tone m-r-5" type="submit" asp-action="Enroll" data-toggle="modal" data-target="#exampleModal">Enroll</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
                     }
-                }
-            </tbody>
-        </table>
-        <div aria-label="Page navigation example">
-            <ul class="pagination">
-                <pager class="pager-container" list="@Model" asp-area="Teacher" asp-controller="TeacherTests"
-                    asp-action="Index" />
-            </ul>
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-area="Teacher" asp-controller="TeacherTests"
+                           asp-action="Index" />
+                </ul>
+            </div>
         </div>
     </div>
 </div>

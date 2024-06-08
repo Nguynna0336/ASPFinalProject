@@ -3,100 +3,105 @@
     ViewData["Title"] = "Start Test";
 }
 
-
 <!-- Content Wrapper START -->
-<div class="main-content">
-    <div class="container">
-@using (Html.BeginForm("Submit", "Tests", FormMethod.Post))
-{
-    <input  name="testId" value="@ViewBag.TestId" type="hidden"/>
-    <input name="userId" value="@ViewBag.UserId" type="hidden"/>
-    int index = 0;
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Default" asp-controller="Home" asp-action="index" class="breadcrumb-item">
+                <i class="anticon anticon-home m-r-5"></i>Home
+            </a>
+            <span class="breadcrumb-item active">Start test</span>
+        </nav>
+    </div>
+</div>
+<div class="container">
+    <div class="container d-flex justify-content-center">
+
+        @using (Html.BeginForm("Submit", "Tests", FormMethod.Post))
+        {
+            <div class="mt-3">
+                <h5>Thời gian còn lại: <span id="countdown">@ViewBag.Time:00</span> (mm:ss)</h5>
+            </div>
+            <input name="testId" value="@ViewBag.TestId" type="hidden" />
+            <input name="userId" value="@ViewBag.UserId" type="hidden" />
+            int index = 0;
             @foreach (var item in ViewBag.QuestionList)
-    {
-        <div class="card">
-            <div class="card-body">
-                <h5>Câu @(index+1)</h5>
-                @if (Model != null && Model.Count > index)
-                {
-                    @Html.HiddenFor(model => model[index].questionId, new { Value = item.QuestionsId })
-                }
-                <div class="row">
-                    <div class="col-md-12">
-                        <p style="font-size: 21px; display:block;" class="ml-3 mt-3">@(item.Description)</p>
-                    </div>
-                    <div class="row">
-                        <div class=" align-items-center m-t-5 m-b-15">
-                            <div class="container ml-4 mt-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="model[@(index)].answer"
-                                        id="optionA@(index)" value="OptionA" checked>
-                                    <label class="form-check-label ml-3" for="optionA@(index)" style="font-size: 19px;">
-                                        @item.OptionA
-                                    </label>
-                                </div>
-                                <div class="form-check my-3">
-                                    <input class="form-check-input" type="radio" name="model[@(index)].answer"
-                                        id="optionB@(index)" value="OptionB">
-                                    <label class="form-check-label ml-3" for="optionB@(index)" style="font-size: 18px;">
-                                        @item.OptionB
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="model[@(index)].answer"
-                                        id="optionC@(index)" value="OptionC">
-                                    <label class="form-check-label ml-3" for="optionC@(index)" style="font-size: 18px;">
-                                        @item.OptionC
-                                    </label>
-                                </div>
-                                <div class="form-check my-3 ">
-                                    <input class="form-check-input" type="radio" name="model[@(index)].answer"
-                                        id="optionD@(index)" value="OptionD">
-                                    <label class="form-check-label ml-3" for="optionD@(index)" style="font-size: 18px;">
-                                        @item.OptionD
-                                    </label>
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Câu @(index + 1)</h5>
+                        @if (Model != null && Model.Count > index)
+                        {
+                            @Html.HiddenFor(model => model[index].questionId, new { Value = item.QuestionsId })
+                        }
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p style="font-size: 21px; display:block;" class="ml-3 mt-3">@(item.Description)</p>
+                            </div>
+                            <div class="row">
+                                <div class=" align-items-center m-t-5 m-b-15">
+                                    <div class="container ml-4 mt-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="model[@(index)].answer"
+                                                   id="optionA@(index)" value="OptionA" checked>
+                                            <label class="form-check-label ml-3" for="optionA@(index)" style="font-size: 19px;">
+                                                @item.OptionA
+                                            </label>
+                                        </div>
+                                        <div class="form-check my-3">
+                                            <input class="form-check-input" type="radio" name="model[@(index)].answer"
+                                                   id="optionB@(index)" value="OptionB">
+                                            <label class="form-check-label ml-3" for="optionB@(index)" style="font-size: 18px;">
+                                                @item.OptionB
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="model[@(index)].answer"
+                                                   id="optionC@(index)" value="OptionC">
+                                            <label class="form-check-label ml-3" for="optionC@(index)" style="font-size: 18px;">
+                                                @item.OptionC
+                                            </label>
+                                        </div>
+                                        <div class="form-check my-3 ">
+                                            <input class="form-check-input" type="radio" name="model[@(index)].answer"
+                                                   id="optionD@(index)" value="OptionD">
+                                            <label class="form-check-label ml-3" for="optionD@(index)" style="font-size: 18px;">
+                                                @item.OptionD
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        index++;
-    }
-    <input type="submit" value="Submit" />
-}
+                index++;
+            }
 
-
-@* @using (Html.BeginForm("Submit", "Tests", FormMethod.Post))
-{
-    for (int i = 0; i < Model.Count; i++)
-    {
-        @Html.HiddenFor(model => model[i].questionId)
-        <div>
-            @Html.LabelFor(model => model[i].answer)
-            @Html.RadioButtonFor(model => model[i].answer, "OptionA") OptionA
-            @Html.RadioButtonFor(model => model[i].answer, "OptionB") OptionB
-            @Html.RadioButtonFor(model => model[i].answer, "OptionC") OptionC
-            @Html.RadioButtonFor(model => model[i].answer, "OptionD") OptionD
-        </div>
-    }
-    <input type="submit" value="Submit" />
-} *@
-
-        
-
-    </div>
-    <div class="m-t-30">
-        <nav>
-            <ul class="pagination justify-content-center">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-        </nav>
+            <button id="submitButton" type="submit" class="btn btn-info btn-tone btn-tone float-right" value="submit">Submit</button>
+        }
     </div>
 </div>
 <!-- Content Wrapper END -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var totalTime = @ViewBag.Time * 60; // Chuyển đổi phút thành giây
+        var timer = setInterval(function () {
+            if (totalTime <= 0) {
+                clearInterval(timer);
+                $("#countdown").text("00:00");
+                $("#submitButton").click(); // Automatically click the button
+            } else {
+                var minutes = Math.floor(totalTime / 60);
+                var seconds = totalTime % 60;
+                $("#countdown").text(
+                    (minutes < 10 ? "0" : "") + minutes + ":" +
+                    (seconds < 10 ? "0" : "") + seconds
+                );
+                totalTime--;
+            }
+        }, 1000);
+    });
+</script>

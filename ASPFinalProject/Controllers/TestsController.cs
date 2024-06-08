@@ -117,7 +117,7 @@ namespace ASPFinalProject.Controllers.TestController
             {
                 return Challenge();
             }
-            var test = await _context.Tests.FirstOrDefaultAsync(t => t.TestId == id);
+            var test = await _context.Tests.Include(t => t.Author).FirstOrDefaultAsync(t => t.TestId == id);
             var result = await _context.Results.FirstOrDefaultAsync(t => t.TestId == id);
             if (test == null)
             {
