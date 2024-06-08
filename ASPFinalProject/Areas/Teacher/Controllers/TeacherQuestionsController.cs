@@ -31,11 +31,11 @@ namespace ASPFinalProject.Controllers.QuestionController
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(int page =1)
+        public async Task<IActionResult> Index(int page = 1)
         {
             var pageNumber = page;
             List<Question> questions = await _context.Questions.Include(q => q.Test).ToListAsync();
-            PagedList<Question> model = new PagedList<Question> (questions.AsQueryable(), pageNumber, 10);
+            PagedList<Question> model = new PagedList<Question>(questions.AsQueryable(), pageNumber, 10);
             ViewBag.CurrentPage = pageNumber;
             ViewBag.PageSize = 10;
             return View(model);
@@ -66,7 +66,7 @@ namespace ASPFinalProject.Controllers.QuestionController
             var test = await _context.Tests.FindAsync(TestId);
             if (test == null)
             {
-                _notyfService.Error("Cannot find test with id: " + TestId);
+                _notyfService.Error("Please select valid test");
                 return RedirectToAction("Index", "TeacherTests");
             }
             else
@@ -97,7 +97,7 @@ namespace ASPFinalProject.Controllers.QuestionController
                 var test = await _context.Tests.FindAsync(testId);
                 if (test == null)
                 {
-                    _notyfService.Error("Cannot find test with id: " + testId);
+                    _notyfService.Error("Please select valid test");
                     return RedirectToAction("Index", "TeacherTests");
                 }
                 List<QuestionDTO> error = new List<QuestionDTO>();
@@ -107,6 +107,14 @@ namespace ASPFinalProject.Controllers.QuestionController
                     {
                         if (test.CurrentQuestions < test.NumberOfQuestion)
                         {
+                            string ansTemp = questionDTO.OptionA!;
+                            switch (questionDTO.Answer)
+                            {
+                                case 1: ansTemp = questionDTO.OptionA!; break;
+                                case 2: ansTemp = questionDTO.OptionB!; break;
+                                case 3: ansTemp = questionDTO.OptionC!; break;
+                                case 4: ansTemp = questionDTO.OptionD!; break;
+                            }
                             Question question = new()
                             {
                                 Description = questionDTO.Description,
@@ -114,7 +122,7 @@ namespace ASPFinalProject.Controllers.QuestionController
                                 OptionB = questionDTO.OptionB,
                                 OptionC = questionDTO.OptionC,
                                 OptionD = questionDTO.OptionD,
-                                Answer = questionDTO.Answer,
+                                Answer = ansTemp,
                                 TestId = testId
                             };
                             _context.Add(question);
@@ -170,24 +178,33 @@ namespace ASPFinalProject.Controllers.QuestionController
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, QuestionDTO questionDTO)
+        public async Task<IActionResult> Edit(Question q)
         {
+            ModelState["Test"]!.ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var question = await _context.Questions.FindAsync(id);
+                    var question = await _context.Questions.FindAsync(q.QuestionsId);
                     if (question == null)
                     {
-                        _notyfService.Error("Cannot find question with id: " + id);
-                        return View(questionDTO);
+                        _notyfService.Error("Cannot find question with id: " + q.QuestionsId);
+                        return View(q);
                     }
-                    question.Description = questionDTO.Description;
-                    question.OptionA = questionDTO.OptionA;
-                    question.OptionB = questionDTO.OptionB;
-                    question.OptionC = questionDTO.OptionC;
-                    question.OptionD = questionDTO.OptionD;
-                    question.Answer = questionDTO.Answer;
+                    question.Description = q.Description;
+                    question.OptionA = q.OptionA;
+                    question.OptionB = q.OptionB;
+                    question.OptionC = q.OptionC;
+                    question.OptionD = q.OptionD;
+                    string ansTemp = q.OptionA!;
+                    switch (q.Answer)
+                    {
+                        case "A": ansTemp = q.OptionA!; break;
+                        case "B": ansTemp = q.OptionB!; break;
+                        case "C": ansTemp = q.OptionC!; break;
+                        case "D": ansTemp = q.OptionD!; break;
+                    }
+                    question.Answer = ansTemp;
 
                     _context.Update(question);
                     await _context.SaveChangesAsync();
@@ -195,45 +212,23 @@ namespace ASPFinalProject.Controllers.QuestionController
                 catch (DbUpdateConcurrencyException ex)
                 {
                     _notyfService.Error(ex.Message);
-                    return View(questionDTO);
+                    return View(q);
                 }
                 _notyfService.Success("Question has been edited successfully");
                 return RedirectToAction(nameof(Index));
             }
             _notyfService.Error("Please check your data again");
-            return View(questionDTO);
+            return View(q);
         }
 
-        // GET: TeacherQuestions/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var question = await _context.Questions
-                .Include(q => q.Test)
-                .FirstOrDefaultAsync(m => m.QuestionsId == id);
-            if (question == null)
-            {
-                return NotFound();
-            }
-
-            return View(question);
-        }
-
-        // POST: TeacherQuestions/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var user = _userManager.GetUserAsync(User);
             var question = await _context.Questions.Include(t => t.Test).FirstOrDefaultAsync(q => q.QuestionsId == id);
             if (question == null)
             {
                 _notyfService.Error("Cannot find question with id: " + id);
-                return View();
+                return RedirectToAction(nameof(Index));
             }
             else if (question.Test.AuthorId != user.Id)
             {

@@ -35,10 +35,10 @@
             @if (user == null)
             {
                 <li>
-                    <a href="/Users/Create" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">SignUp</a>
+                    <a href="/Users/Login" class="btn btn-primary btn-xs m-r-5 slideInLeft">Sign in</a>
                 </li>
                 <li>
-                    <a href="/Users/Login" class="btn btn-success py-md-3 px-md-5 animated slideInRight">SignIn</a>
+                    <a href="/Users/Create" class="btn btn-default m-r-5 btn-xs  slideInRight">Sign up</a>
                 </li>
             }
             else
@@ -213,10 +213,16 @@
                         </span>
                         <span class="title">Enroll</span>
                     </a>
-
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="dropdown-toggle" asp-controller="Tests" asp-action="GetResult">
+                        <span class="icon-holder">
+                            <i class="anticon anticon-build"></i>
+                        </span>
+                        <span class="title">Result</span>
+                    </a>
                 </li>
             }
-
         </ul>
     </div>
 </div>

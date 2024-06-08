@@ -1,0 +1,77 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<ASPFinalProject.Models.Result>
+@{
+    ViewData["Title"] = "Result from test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header ml-5">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Default" asp-controller="Home" asp-action="index" class="breadcrumb-item">
+                <i class="anticon anticon-home m-r-5"></i>Home
+            </a>
+            <a asp-area="Teacher" asp-controller="TeacherTests" asp-action="index" class="breadcrumb-item active">Your tests</a>
+            <span class="breadcrumb-item active">Results</span>
+        </nav>
+    </div>
+</div>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="row m-b-30">
+                <div class="col-lg-8 text-left">
+                    <h2 class="m-l-10">Results from test @ViewBag.TestTitle</h2>
+                </div>
+            </div>
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>
+                            Full name
+                        </th>
+                        <th>
+                            Score
+                        </th>
+                        <th>
+                            Submit at
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @item.User.Fullname
+                                </td>
+                                @if (item.Score >= 0)
+                                {
+                                    <td>
+                                        @item.Score
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        No result
+                                    </td>
+                                }
+
+                                <td>@item.SubmitAt</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-area="Teacher" asp-controller="TeacherTests"
+                           asp-action="GetResult" asp-route-id="@ViewBag.TestId" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

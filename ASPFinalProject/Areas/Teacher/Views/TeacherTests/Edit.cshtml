@@ -4,55 +4,80 @@
     ViewData["Title"] = "Edit";
 }
 
+<div class="page-header ml-5">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Default" asp-controller="Home" asp-action="index" class="breadcrumb-item">
+                <i class="anticon anticon-home m-r-5"></i>Home
+            </a>
+            <a asp-area="Teacher" asp-controller="TeacherTests" asp-action="index" class="breadcrumb-item active">Your tests</a>
+            <span class="breadcrumb-item active">Edit</span>
+        </nav>
+    </div>
+</div>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Edit Information</h2>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label asp-for="@Model.TestTitle" class="control-label">Test title</label>
+                        <input asp-for="@Model.TestTitle" class="form-control" />
+                        <span asp-validation-for="@Model.TestTitle" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4 d-flex align-items-end justify-content-center">
+                        <div class="switch m-r-10">
+                            <input type="checkbox" id="switch-1" asp-for="@Model.IsOpen" checked="">
+                            <label for="switch-1"></label>
+                        </div>
+                        <label asp-for="@Model.IsOpen">Open</label>
+                    </div>
+                </div>
 
-<div class="row">
-    <div class="col-md-4" style="margin: auto;">
-        <h1 style="text-align: center;">Edit Test</h1>
-<hr>
-<hr>
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="@Model.TestTitle" class="control-label"></label>
-                <input asp-for="@Model.TestTitle" class="form-control" />
-                <span asp-validation-for="@Model.TestTitle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Description" class="control-label"></label>
-                <textarea asp-for="@Model.Description" class="form-control"></textarea>
-                <span asp-validation-for="@Model.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Password" class="control-label"></label>
-                <input asp-for="@Model.Password" class="form-control" />
-                <span asp-validation-for="@Model.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Time" class="control-label"></label>
-                <input asp-for="@Model.Time" class="form-control"></input>
-                <span asp-validation-for="@Model.Time" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.NumberOfQuestion" class="control-label"></label>
-                <input asp-for="@Model.NumberOfQuestion" class="form-control" />
-                <span asp-validation-for="@Model.NumberOfQuestion" class="text-danger"></span>
-            </div>
-            <div class="d-flex justify-content-between">
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-success" />
-            </div>
-            <div class="form-group">
-                <a asp-action="Index" class="btn btn-primary" >Back to List</a>
-            </div>
-            </div>
-        </form>
+                <div class="form-group">
+                    <label asp-for="@Model.Description" class="control-label"></label>
+                    <textarea asp-for="@Model.Description" class="form-control"></textarea>
+                    <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label asp-for="@Model.Time" class="control-label">Time (Min)</label>
+                        <input asp-for="@Model.Time" class="form-control" />
+                        <span asp-validation-for="@Model.Time" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="@Model.NumberOfQuestion" class="control-label">Number of questions</label>
+                        <input asp-for="@Model.NumberOfQuestion" class="form-control" />
+                        <span asp-validation-for="@Model.NumberOfQuestion" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="@Model.Password" class="control-label"></label>
+                        <input asp-for="@Model.Password" class="form-control" />
+                        <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <div class="form-group col-md-10">
+                        <a asp-action="Index" class="btn btn-success btn-tone">Back to List</a>
+                    </div>
+                    <div class="form-group col-md-2 d-flex align-items-center justify-content-between">
+                        <button type="submit" class="btn btn-info btn-tone">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-</div>
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

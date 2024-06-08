@@ -7,100 +7,118 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="page-header">
+<div class="page-header ml-5">
     <div class="header-sub-title">
         <nav class="breadcrumb breadcrumb-dash">
             <a asp-area="Default" asp-controller="Home" asp-action="index" class="breadcrumb-item">
                 <i class="anticon anticon-home m-r-5"></i>Home
             </a>
-            <span class="breadcrumb-item active">Danh sách Bài Test : page </span>
+            <a asp-area="Teacher" asp-controller="TeacherQuestions" asp-action="index" class="breadcrumb-item active">All questions</a>
+            <span class="breadcrumb-item active">Questions of test @ViewBag.TestTitle </span>
         </nav>
     </div>
 </div>
-<div class="card">
-    <div class="card-body">
-        <div class="row m-b-30">
-            <div class="col-lg-8">
-                <div class="d-md-flex">
-                    <div class="m-b-10 m-r-15">
-                    </div>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="row m-b-30">
+                <div class="col-lg-8 text-left">
+                    <h2 class="m-l-10">Questions of test @ViewBag.TestTitle </h2>
+                </div>
+                <div class="col-lg-4 text-right">
+                    <a class="btn btn-primary btn-tone" asp-action="Create">
+                        <i class="anticon anticon-plus-circle m-r-5"></i>
+                        <span>Add question</span>
+                    </a>
                 </div>
             </div>
-            <div class="col-lg-4 text-right">
-                <a asp-action="Create" asp-controller="TeacherQuestions" asp-route-id="@ViewBag.testId" class="btn btn-primary" >
-                    <i class="anticon anticon-plus-circle m-r-5"></i>
-                    <span>Add Question</span>
-                </a>
-            </div>
-            <div class="col-lg-4 text-left">
-                <h3>Danh sách câu hỏi của @ViewBag.TestTitle</h3>
-            </div>
-        </div>
-        <table class="table table-hover e-commerce-table">
-            <thead>
-                <tr>
-                    <th>
-                        Test Title
-                    </th>
-                    <th>
-                        Description
-                    </th>
-                    <th>
-                        OptionA
-                    </th>
-                    <th>
-                        OptionB
-                    </th>
-                    <th>
-                        OptionC
-                    </th>
-                    <th>
-                        OptionD
-                    </th>
-                    <th>
-                        Answer
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model != null)
-                {
-                    foreach (var item in Model)
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>
+                            Test Title
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            OptionA
+                        </th>
+                        <th>
+                            OptionB
+                        </th>
+                        <th>
+                            OptionC
+                        </th>
+                        <th>
+                            OptionD
+                        </th>
+                        <th>
+                            Answer
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
                     {
-                         <tr>
-                            <td>
-                                @item.Test.TestTitle
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Test.TestTitle</td>
+                                <td>
                                     @item.Description
-                                </div>
-                            </td>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        @item.OptionA
+                                    </div>
+                                </td>
 
-                            <td>@item.OptionA</td>
-                            <td style="margin-left: 100px;">@item.OptionB</td>
-                            <td>@item.OptionC</td>
-                            <td>@item.OptionD</td>
-                            <td>@item.Answer</td>
+                                <td>@item.OptionB</td>
+                                <td style="margin-left: 100px;">@item.OptionC</td>
+                                <td>@item.OptionD</td>
+                                <td>@item.Answer</td>
+                                <td class="text-right">
+                                    <a class="btn btn-primary btn-tone m-r-5" asp-action="Details"
+                                       asp-route-id="@item.QuestionsId">Details</a>
+                                    <a class="btn btn-secondary btn-tone m-r-5" asp-action="Edit"
+                                       asp-route-id="@item.QuestionsId">Edit</a>
+                                    <button type="button" class="btn btn-danger btn-tone m-r-5" data-toggle="modal" data-target="#exampleModal">
+                                        Delete
+                                    </button>
 
-                            <td class="text-right">
-                                <a class="btn btn-primary btn-tone m-r-5" asp-action="Details"
-                                   asp-route-id="@item.TestId">View</a>
-                                <a class="btn btn-secondary btn-tone m-r-5" asp-action="Edit"
-                                   asp-route-id="@item.TestId">Edit</a>
-                                <a class="btn btn-success btn-tone m-r-5" asp-action="Delete"
-                                   asp-route-id="@item.TestId">Delete</a>
-                            </td>
-                        </tr> 
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
+                                                    <button type="button" class="close" data-dismiss="modal">
+                                                        <i class="anticon anticon-close"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body text-left">
+                                                    Do you confirm to delete this question?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                    <a asp-action="Delete" class="btn btn-danger btn-tone m-r-5" asp-route-id="@item.QuestionsId">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
                     }
-                }
-            </tbody>
-        </table>
-        <div aria-label="Page navigation example">
-            <ul class="pagination">
-                <pager class="pager-container" list="@Model" asp-area="Teacher" asp-controller="TeacherTests"
-                       asp-action="Index" />
-            </ul>
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-area="Teacher" asp-controller="TeacherTests"
+                           asp-action="Index" />
+                </ul>
+            </div>
         </div>
     </div>
 </div>

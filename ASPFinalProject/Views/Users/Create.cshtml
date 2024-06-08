@@ -18,37 +18,37 @@
 								<div class="card-body">
 									<div class="d-flex align-items-center justify-content-between m-b-30">
 										<img class="img-fluid" alt="" src="~/assets/images/logo/logo.png">
-										<h2 class="m-b-0">Register</h2>
+										<h2 class="m-b-0">Sign up</h2>
 									</div>
 									<form asp-action="Create" method="post" enctype="multipart/form-data">
 										<div class="form-group">
 											<label class="form-label my-3"
-												asp-for="@Model.Fullname"></label><sup>*</sup>
+												asp-for="@Model.Fullname">Full name</label>
 											<input asp-for="@Model.Fullname" class="form-control" />
 											<span asp-validation-for="@Model.Fullname" class="text-danger"></span>
 										</div>
 										<div class="form-group">
 											<label asp-for="@Model.Username"
-												class="form-label my-3"></label><sup>*</sup>
+												class="form-label my-3">Username</label>
 											<input asp-for="@Model.Username" class="form-control">
 											<span asp-validation-for="@Model.Username" class="text-danger"></span>
 										</div>
 										<div class="form-group">
 											<label asp-for="@Model.Password"
-												class="form-label my-3"></label><sup>*</sup>
+												   class="form-label my-3">Password</label>
 											<input type="password" asp-for="@Model.Password" class="form-control">
 											<span asp-validation-for="@Model.Password" class="text-danger"></span>
 										</div>
 										<div class="form-group">
 											<label asp-for="@Model.ConfirmPassword"
-												class="form-label my-3"></label><sup>*</sup>
+												   class="form-label my-3">Confirm password</label><sup>*</sup>
 											<input type="password" asp-for="@Model.ConfirmPassword"
 												class="form-control">
 											<span asp-validation-for="@Model.ConfirmPassword"
 												class="text-danger"></span>
 										</div>
 										<div class="form-group">
-											<label class="form-label my-3" asp-for="@Model.Email"></label><sup>*</sup>
+											<label class="form-label my-3" asp-for="@Model.Email">Email</label><sup>*</sup>
 											<input asp-for="@Model.Email" class="form-control" />
 											<span asp-validation-for="@Model.Email" class="text-danger"></span>
 										</div>

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using ASPFinalProject.DTOs.Test;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using PagedList.Core;
+using System.Drawing.Printing;
 
 namespace ASPFinalProject.Areas.Teacher.Controllers
 {
@@ -184,29 +185,7 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
         }
 
         // GET: Tests/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            var currentUser = await _userManager.GetUserAsync(User);
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var test = await _context.Tests
-                .Include(t => t.Author)
-                .FirstOrDefaultAsync(m => m.TestId == id);
-            if (test == null || test.AuthorId != currentUser!.Id)
-            {
-                return NotFound();
-            }
-
-            return View(test);
-        }
-
-        // POST: Tests/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (TestExists(id))
             {
@@ -246,20 +225,29 @@ namespace ASPFinalProject.Areas.Teacher.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> GetResult([FromRoute(Name = "id")] int testId)
+        public async Task<IActionResult> GetResult([FromRoute(Name = "id")]int testId,int page = 1)
         {
+            int pageNumber = page;
+            int pagesize = 10;
             var test = await _context.Tests.FindAsync(testId);
             if (test == null)
             {
-                return NotFound();
+                _notyfService.Error("Please try again with a valid test");
+                return RedirectToAction(nameof(Index));
             }
-            var user = _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
             if (user == null || user.Id != test.AuthorId)
             {
-                return Forbid();
+                _notyfService.Error("You dont have permission to do this");
+                return RedirectToAction(nameof(Index));
             }
-            var resultList = await _context.Results.Where(r => r.TestId == testId).ToListAsync();
-            return View(resultList);
+            List<Result> results = await _context.Results.Include(r => r.User).Where(r => r.TestId == testId).ToListAsync();
+            PagedList<Result> model = new PagedList<Result>(results.AsQueryable(),pageNumber, pagesize);
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageSize = pagesize;
+            ViewBag.TestTitle = test.TestTitle;
+            ViewBag.TestId = test.TestId;
+            return View(model);
         }
 
         [HttpGet]

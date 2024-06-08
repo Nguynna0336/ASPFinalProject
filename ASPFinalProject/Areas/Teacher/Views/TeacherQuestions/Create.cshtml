@@ -3,69 +3,88 @@
 @{
     ViewData["Title"] = "Create";
 }
+<div class="page-header ml-5">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Default" asp-controller="Home" asp-action="index" class="breadcrumb-item">
+                <i class="anticon anticon-home m-r-5"></i>Home
+            </a>
+            <a asp-area="Teacher" asp-controller="TeacherQuestions" asp-action="index" class="breadcrumb-item active">All questions</a>
+            <span class="breadcrumb-item active">Create</span>
+        </nav>
+    </div>
+</div>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Add question</h2>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" asp-route-id="@ViewBag.TestId" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-
-<div class="row">
-    <div class="col-md-4" style="margin: auto;">
-        <h1 style="text-align: center;">Create Questions</h1>
-        <hr>
-        <form asp-action="Create" asp-route-id="@ViewBag.TestId" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            @* Repeatable section for each question *@
-            @for (int i = 0; i < ViewBag.NumberOfQuestion; i++)
-            {
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Question @(i + 1)</h5>
-                        <div class="form-group">
-                            <label asp-for="@Model[i].Description" class="control-label"></label>
-                            <input asp-for="@Model[i].Description" class="form-control" />
-                            <span asp-validation-for="@Model[i].Description" class="text-danger"></span>
+                @* Repeatable section for each question *@
+                @for (int i = 0; i < ViewBag.NumberOfQuestion; i++)
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Question @(i+1)</h3>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="@Model[i].OptionA" class="control-label"></label>
-                            <input asp-for="@Model[i].OptionA" class="form-control" />
-                            <span asp-validation-for="@Model[i].OptionA" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="@Model[i].OptionB" class="control-label"></label>
-                            <input asp-for="@Model[i].OptionB" class="form-control" />
-                            <span asp-validation-for="@Model[i].OptionB" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="@Model[i].OptionC" class="control-label"></label>
-                            <input asp-for="@Model[i].OptionC" class="form-control" />
-                            <span asp-validation-for="@Model[i].OptionC" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="@Model[i].OptionD" class="control-label"></label>
-                            <input asp-for="@Model[i].OptionD" class="form-control" />
-                            <span asp-validation-for="@Model[i].OptionD" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="@Model[i].Answer" class="control-label"></label>
-                            <input asp-for="@Model[i].Answer" class="form-control" />
-                            <span asp-validation-for="@Model[i].Answer" class="text-danger"></span>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="@Model[i].Description" class="control-label"></label>
+                                <textarea asp-for="@Model[i].Description" class="form-control"></textarea>
+                                <span asp-validation-for="@Model[i].Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label asp-for="@Model[i].OptionA" class="control-label">Option A</label>
+                                    <input asp-for="@Model[i].OptionA" class="form-control option-input" id="optionA" />
+                                    <span asp-validation-for="@Model[i].OptionA" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label asp-for="@Model[i]el.OptionB" class="control-label">Option B</label>
+                                    <input asp-for="@Model[i].OptionB" class="form-control option-input" id="optionB" />
+                                    <span asp-validation-for="@Model[i].OptionB" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label asp-for="@Model[i].OptionC" class="control-label">Option C</label>
+                                    <input asp-for="@Model[i].OptionC" class="form-control option-input" id="optionC" />
+                                    <span asp-validation-for="@Model[i].OptionC" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label asp-for="@Model[i].OptionD" class="control-label">Option D</label>
+                                    <input asp-for="@Model[i].OptionD" class="form-control option-input" id="optionD" />
+                                    <span asp-validation-for="@Model[i].OptionD" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@Model[i].Answer">Answer</label>
+                                <select asp-for="@Model[i].Answer" class="form-control" id="answerSelect">
+                                    <option value="1">Option A</option>
+                                    <option value="2">Option B</option>
+                                    <option value="3">Option C</option>
+                                    <option value="4">Option D</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+                }
+                <div class="d-flex justify-content-between">
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-success" />
+                    </div>
+                    <div class="form-group">
+                        <a asp-action="Index" asp-controller="TeacherTests" class="btn btn-primary">Back to List</a>
+                    </div>
                 </div>
-            }
+            </form>
 
-            <div class="d-flex justify-content-between">
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-success" />
-                </div>
-                <div class="form-group">
-                    <a asp-action="Index" class="btn btn-primary">Back to List</a>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
-</div> 
-
-
-
+</div>
 
 @section Scripts {
     @{

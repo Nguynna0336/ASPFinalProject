@@ -5,97 +5,154 @@
 }
 
 <!-- Content Wrapper START -->
-<div class="main-content">
-    <div class="container">
-        <div class="card">
-            <div class="card-body">
-                <div id="invoice" class="p-h-30">
-                    <div class="m-t-15 lh-2">
-                        <div class="inline-block" style="font-size: 18px;">
-                            <img class="img-fluid" src="~/assets/images/logo/logo.png" alt="">
-                            <address class="p-l-10">
-                                <div class="text-dark text-uppercase d-inline-block">
-                                    <span class="font-weight-semibold text-dark mr-4">Test Title </span>
-                                </div>
-                                <div class="float-right">@Html.DisplayFor(model => model.TestTitle)</div>
-                                <br>
-                                <div class="text-dark text-uppercase d-inline-block">
-                                    <span class="font-weight-semibold text-dark mr-4">Description </span>
-                                </div>
-                                <div class="float-right">@Html.DisplayFor(model => model.Description)</div>
-                                <br>
-
-                                <div class="text-dark text-uppercase d-inline-block">
-                                    <span class="font-weight-semibold text-dark mr-4">Password </span>
-                                </div>
-                                <div class="float-right">@Html.DisplayFor(model => model.Password)</div>
-                                <br>
-                                <div class="text-dark text-uppercase d-inline-block">
-                                    <span class="font-weight-semibold text-dark mr-4">Time </span>
-                                </div>
-                                <div class="float-right">@Html.DisplayFor(model => model.Time)</div>
-                                <br>
-                                <div class="text-dark text-uppercase d-inline-block">
-                                    <span class="font-weight-semibold text-dark mr-4">Number Of Question </span>
-                                </div>
-                                <div class="float-right">@Html.DisplayFor(model => model.NumberOfQuestion)</div>
-                                <br>
-                                <div class="text-dark text-uppercase d-inline-block">
-                                    <span class="font-weight-semibold text-dark mr-4">Current questions </span>
-                                </div>
-                                <div class="float-right">@Html.DisplayFor(model => model.CurrentQuestions)</div>
-                            </address>
-                        </div>
-                        <div class="float-right">
-                            <h2>Detail Test</h2>
-                        </div>
-                    </div>
-                    <div class="row m-t-20 lh-2 d-flex">
-                        <div class="col-sm-7">
-                            <h4 class="p-l-10 m-t-10">Status</h4>
-                            @if (@Model!.IsOpen == true)
-                            {
-                                <div class="d-flex align-items-center">
-                                    <div class="badge badge-success badge-dot m-r-10"></div>
-                                    <div>Open</div>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="d-flex align-items-center">
-                                    <div class="badge badge-error badge-dot m-r-10"></div>
-                                    <div>Close</div>
-                                </div>
-                            }
-                            <a asp-action="SetStatus" class="btn btn-primary mt-3" asp-route-id="@Model?.TestId">Change status</a>
-                        </div>
-                        <div class="col-sm-5">
-                            <div class="m-t-80 d-flex">
-                                <div class="text-dark text-uppercase d-inline-block">
-                                    <span class="font-weight-semibold text-dark">Create Date:</span>
-                                </div>
-                                <div class="ml-4">@Html.DisplayFor(model => model.CreatedAt)</div>
-                            </div>
-                            <div class=" d-flex mb-5">
-                                <div class="text-dark text-uppercase d-inline-block">
-                                    <span class="font-weight-semibold text-dark">Update Date:</span>
-                                </div>
-                                <div class="ml-4 ">@Html.DisplayFor(model => model.UpdatedAt)</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <a asp-action="Index" class="btn btn-danger mx-3">Back to List</a>
-                        <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model?.TestId">Edit</a>
-                        <a asp-action="Create" asp-controller="TeacherQuestions" asp-route-id="@Model?.TestId" class="btn btn-success mx-3">Add questions</a>
-                        <a asp-action="getQuestions" asp-controller="TeacherQuestions" asp-route-id="@Model?.TestId" class="btn btn-info">Show list questions</a>
-                    </div>
-                </div>
+<div class="page-header ml-5">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Default" asp-controller="Home" asp-action="index" class="breadcrumb-item">
+                <i class="anticon anticon-home m-r-5"></i>Home
+            </a>
+            <a asp-area="Teacher" asp-controller="TeacherTests" asp-action="index" class="breadcrumb-item active">Your tests</a>
+            <span class="breadcrumb-item active">Details</span>
+        </nav>
+    </div>
+</div>
+<div class="container">
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h2 class="card-title col-lg-10">Details</h2>
+            <div class="col-lg-2">
+                <a asp-action="Edit" class="btn btn-primary btn-tone m-r-4 " asp-route-id="@Model?.TestId">
+                    <i class="anticon anticon-edit"></i>
+                    <span>Edit</span>
+                </a>
             </div>
         </div>
-
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="product-info-table m-t-20">
+                    <tbody>
+                        <tr>
+                            <td>Title: </td>
+                            <td class="text-dark font-weight-semibold">@Model!.TestTitle</td>
+                        </tr>
+                        <tr>
+                            <td>Author:</td>
+                            <td>@Model.Author.Fullname</td>
+                        </tr>
+                        <tr>
+                            <td>Password</td>
+                            <td>
+                                <span id="password-field">@Model.Password</span>
+                                <button type="button" id="toggle-password" class="btn btn-light ml-3 btn-sm">
+                                    <i class="anticon anticon-eye" id="toggle-icon"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Time:</td>
+                            <td>@Model.Time</td>
+                        </tr>
+                        <tr>
+                            <td>Number of questions: </td>
+                            <td>@Model.NumberOfQuestion</td>
+                        </tr>
+                        <tr>
+                            <td>Current questions:</td>
+                            <td>@Model.CurrentQuestions</td>
+                            <td>
+                                <a asp-action="getQuestions" asp-controller="TeacherQuestions" asp-route-id="@Model?.TestId" class="btn btn-info btn-tone">Show questions</a>
+                                <a asp-action="Create" asp-controller="TeacherQuestions" asp-route-id="@Model?.TestId" class="btn btn-success btn-tone mx-3">Add questions</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Status:</td>
+                            <td>
+                                @if (Model!.IsOpen)
+                                {
+                                    <span class="badge badge-pill badge-cyan">Open</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-pill badge-red">Close</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="SetStatus" class="btn btn-info btn-tone m-r-5" asp-route-id="@Model?.TestId">Change status</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Created at: </td>
+                            <td>@Model!.CreatedAt</td>
+                        </tr>
+                        <tr>
+                            <td>Update at:</td>
+                            <td>@Model.UpdatedAt</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a asp-action="Index" class="btn btn-success btn-tone mx-3 float-right">Back to List</a>
+                            </td>
+                            <td> <a asp-action="GetResult" class="btn btn-primary btn-tone mx-3" asp-route-id="@Model.TestId"></a></td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-tone m-r-5" data-toggle="modal" data-target="#exampleModal">
+                                    Delete
+                                </button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
+                                                <button type="button" class="close" data-dismiss="modal">
+                                                    <i class="anticon anticon-close"></i>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body text-left">
+                                                Do you confirm to delete this test?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                <a asp-action="Delete" class="btn btn-danger btn-tone m-r-5" asp-route-id="@Model.TestId">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
-
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Test description</h2>
+        </div>
+        <div class="card-body">
+            @Model.Description
+        </div>
+    </div>
 </div>
 <!-- Content Wrapper END -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const passwordField = document.getElementById('password-field');
+        const toggleButton = document.getElementById('toggle-password');
+        const toggleIcon = document.getElementById('toggle-icon');
+
+        toggleButton.addEventListener('click', function () {
+            const isPasswordVisible = passwordField.getAttribute('data-visible') === 'true';
+            if (isPasswordVisible) {
+                passwordField.textContent = '@Model.Password';
+                toggleIcon.classList.remove('anticon-eye-invisible');
+                toggleIcon.classList.add('anticon-eye');
+                passwordField.setAttribute('data-visible', 'false');
+            } else {
+                passwordField.textContent = '********';
+                toggleIcon.classList.remove('anticon-eye');
+                toggleIcon.classList.add('anticon-eye-invisible');
+                passwordField.setAttribute('data-visible', 'true');
+            }
+        });
+    });
+</script>

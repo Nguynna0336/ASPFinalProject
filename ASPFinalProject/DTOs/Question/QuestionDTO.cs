@@ -16,7 +16,7 @@ namespace ASPFinalProject.DTOs.Question
         public string? OptionD { get; set; }
 
         [Required]
-        public string Answer { get; set; } = null!;
+        public int Answer { get; set; } = 1;
 
     }
 }

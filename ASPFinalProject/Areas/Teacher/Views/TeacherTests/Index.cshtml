@@ -5,93 +5,119 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="page-header">
+<div class="page-header ml-5">
     <div class="header-sub-title">
         <nav class="breadcrumb breadcrumb-dash">
-            <a asp-area="Default" asp-controller="Home" asp-action="index" class="breadcrumb-item"><i
-                    class="anticon anticon-home m-r-5"></i>Home</a>
-            <span class="breadcrumb-item active">Danh sách Bài Test : page </span>
+            <a asp-area="Default" asp-controller="Home" asp-action="index" class="breadcrumb-item">
+                <i class="anticon anticon-home m-r-5"></i>Home
+            </a>
+            <a asp-area="Teacher" asp-controller="TeacherTests" asp-action="index" class="breadcrumb-item active">Your tests</a>
         </nav>
     </div>
 </div>
-<div class="card">
-    <div class="card-body">
-        <div class="row m-b-30">
-            <div class="col-lg-8">
-                <div class="d-md-flex">
-                    <div class="m-b-10 m-r-15">
-                    </div>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="row m-b-30">
+                <div class="col-lg-8 text-left">
+                    <h2 class="m-l-10">Your tests</h2>
+                </div>
+                <div class="col-lg-4 text-right">
+                    <a class="btn btn-primary btn-tone" asp-action="Create">
+                        <i class="anticon anticon-plus-circle m-r-5"></i>
+                        <span>Add Test</span>
+                    </a>
                 </div>
             </div>
-            <div class="col-lg-4 text-right">
-                <a class="btn btn-primary" asp-action="Create">
-                    <i class="anticon anticon-plus-circle m-r-5"></i>
-                    <span>Add Test</span>
-                </a>
-            </div>
-            <div class="col-lg-4 text-left">
-                <h3>List Test</h3>
-            </div>
-        </div>
-        <table class="table table-hover e-commerce-table">
-            <thead>
-                <tr>
-                    <th>
-                        TestTitle
-                    </th>
-                    <th>
-                        Fullname Author
-                    </th>
-                    <th>
-                        Time
-                    </th>
-                    <th>
-                       NumberOfQuestion
-                    </th>
-                    <th>
-                        Description
-                    </th>
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Time (Min)
+                        </th>
+                        <th>
+                            Number Of Question
+                        </th>
+                        <th>
+                            Description
+                        </th>
 
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model != null)
-                {
-                    foreach (var item in Model)
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
                     {
-                        <tr>
-                            <td>
-                                @item.TestTitle
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    @item.Author.Fullname
-                                </div>
-                            </td>
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @item.TestTitle
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        @if (item!.IsOpen)
+                                        {
+                                            <span class="badge badge-pill badge-cyan">Open</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-pill badge-red">Close</span>
+                                        }
+                                    </div>
+                                </td>
 
-                            <td>@item.Time</td>
-                            <td style="margin-left: 100px;">@item.NumberOfQuestion</td>
-                            <td>@item.Description</td>
+                                <td>@item.Time</td>
+                                <td style="margin-left: 100px;">@item.NumberOfQuestion</td>
+                                <td>@item.Description</td>
 
-                            <td class="text-right">
-                                <a class="btn btn-primary btn-tone m-r-5" asp-action="Details"
-                                    asp-route-id="@item.TestId">Detail and Add Question
+                                <td class="text-right">
+                                    <a class="btn btn-primary btn-tone m-r-5" asp-action="Details"
+                                       asp-route-id="@item.TestId">
+                                        Details
                                     </a>
-                                <a class="btn btn-secondary btn-tone m-r-5" asp-action="Edit"
-                                    asp-route-id="@item.TestId">Edit</a>
-                                <a class="btn btn-success btn-tone m-r-5" asp-action="Delete"
-                                    asp-route-id="@item.TestId">Delete</a>
-                            </td>
-                        </tr>
+                                    <a class="btn btn-secondary btn-tone m-r-5" asp-action="Edit"
+                                       asp-route-id="@item.TestId">Edit</a>
+                                    <button type="button" class="btn btn-danger btn-tone m-r-5" data-toggle="modal" data-target="#exampleModal">
+                                        Delete
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
+                                                    <button type="button" class="close" data-dismiss="modal">
+                                                        <i class="anticon anticon-close"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body text-left">
+                                                    Do you confirm to delete this test?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                    <a asp-action="Delete" class="btn btn-danger btn-tone m-r-5" asp-route-id="@item.TestId">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
                     }
-                }
-            </tbody>
-        </table>
-        <div aria-label="Page navigation example">
-            <ul class="pagination">
-                <pager class="pager-container" list="@Model" asp-area="Teacher" asp-controller="TeacherTests"
-                    asp-action="Index" />
-            </ul>
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-area="Teacher" asp-controller="TeacherTests"
+                           asp-action="Index" />
+                </ul>
+            </div>
         </div>
     </div>
 </div>

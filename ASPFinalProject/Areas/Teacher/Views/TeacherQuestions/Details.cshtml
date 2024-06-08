@@ -3,70 +3,96 @@
 @{
     ViewData["Title"] = "Details";
 }
+<div class="page-header ml-5">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Default" asp-controller="Home" asp-action="index" class="breadcrumb-item">
+                <i class="anticon anticon-home m-r-5"></i>Home
+            </a>
+            <a asp-area="Teacher" asp-controller="TeacherQuestions" asp-action="index" class="breadcrumb-item active">All questions</a>
+            <span class="breadcrumb-item active">Details</span>
+        </nav>
+    </div>
+</div>
 
-<div class="main-content">
-    <div class="container">
-        <div class="card">
-            <div class="card-body">
-                <div id="invoice" class="p-h-30">
-                    <div class="m-t-15 lh-2">
-                        <div class="inline-block" style="font-size: 18px;">
-                            <img class="img-fluid" src="~/assets/images/logo/logo.png" alt="">
-                            <address class="p-l-10">
-                                <div class="text-dark text-uppercase d-inline-block">
-                                    <span class="font-weight-semibold text-dark mr-4">Description </span>
-                                </div>
-                                <div class="float-right">@Html.DisplayFor(model => model.Description)</div>
-                                <br>
-                                <div class="text-dark text-uppercase d-inline-block">
-                                    <span class="font-weight-semibold text-dark mr-4">OptionA </span>
-                                </div>
-                                <div class="float-right">@Html.DisplayFor(model => model.OptionA)</div>
-                                <br>
-
-                                <div class="text-dark text-uppercase d-inline-block">
-                                    <span class="font-weight-semibold text-dark mr-4">OptionB </span>
-                                </div>
-                                <div class="float-right">@Html.DisplayFor(model => model.OptionB)</div>
-                                <br>
-                                <div class="text-dark text-uppercase d-inline-block">
-                                    <span class="font-weight-semibold text-dark mr-4">OptionC </span>
-                                </div>
-                                <div class="float-right">@Html.DisplayFor(model => model.OptionC)</div>
-                                <br>
-                                <div class="text-dark text-uppercase d-inline-block">
-                                    <span class="font-weight-semibold text-dark mr-4">OptionD </span>
-                                </div>
-                                <div class="float-right">@Html.DisplayFor(model => model.OptionD)</div>
-                                <br>
-                                <div class="text-dark text-uppercase d-inline-block">
-                                    <span class="font-weight-semibold text-dark mr-4">Answer </span>
-                                </div>
-                                <div class="float-right">@Html.DisplayFor(model => model.Answer)</div>
-                                <br>
-                                <div class="text-dark text-uppercase d-inline-block">
-                                    <span class="font-weight-semibold text-dark mr-4">Test </span>
-                                </div>
-                                <div class="float-right">@Html.DisplayFor(model => model.TestId)</div>
-                            </address>
-                        </div>
-
-                        <div class="float-right">
-                            <h2>Detail Test</h2>
-                        </div>
-
-                    </div>
-
-                    <div>
-                        @* <a asp-action="SetStatus" asp-route-id="@Model?.TestId">Open</a> *@
-                        <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model?.TestId">Edit</a> |
-                        <a asp-action="Index" class="btn btn-primary">Back to List</a>
-                    </div>
-                </div>
+<div class="container">
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h2 class="card-title col-lg-10">Question details</h2>
+            <div class="col-lg-2">
+                <a asp-action="Edit" class="btn btn-primary btn-tone m-r-4 " asp-route-id="@Model?.QuestionsId">
+                    <i class="anticon anticon-edit"></i>
+                    <span>Edit</span>
+                </a>
             </div>
         </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="product-info-table m-t-20">
+                    <tbody>
+                        <tr>
+                            <td>Test title: </td>
+                            <td class="text-dark font-weight-semibold">@Model!.Test.TestTitle</td>
+                        </tr>
+                        <tr>
+                            <td>Description:</td>
+                            <td>@Model.Description</td>
+                        </tr>
+                        <tr>
+                            <td>Option A:</td>
+                            <td>@Model.OptionA</td>
+                        </tr>
+                        <tr>
+                            <td>Option B:</td>
+                            <td>@Model.OptionB</td>
+                        </tr>
+                        <tr>
+                            <td>Option C:</td>
+                            <td>@Model.OptionC</td>
+                        </tr>
+                        <tr>
+                            <td>Option D:</td>
+                            <td>@Model.OptionD</td>
+                        </tr>
+                        <tr>
+                            <td>Answer:</td>
+                            <td>@Model.Answer</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a asp-action="Index" class="btn btn-success btn-tone mx-3 float-right">Back to List</a>
+                            </td>
+                            <td></td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-tone m-r-5" data-toggle="modal" data-target="#exampleModal">
+                                    Delete
+                                </button>
 
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
+                                                <button type="button" class="close" data-dismiss="modal">
+                                                    <i class="anticon anticon-close"></i>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body text-left">
+                                                Do you confirm to delete this question?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                <a asp-action="Delete" class="btn btn-danger btn-tone m-r-5" asp-route-id="@Model.QuestionsId">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
-
 </div>

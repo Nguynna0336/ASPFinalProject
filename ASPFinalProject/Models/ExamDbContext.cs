@@ -10,6 +10,7 @@ namespace ASPFinalProject.Models
         public DbSet<Test> Tests { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Result> Results { get; set; }
+        public DbSet<SubmitHistory> SubmitHistory { get; set; }
 
         public ExamDbContext(DbContextOptions<ExamDbContext> options) : base(options) { }
 
