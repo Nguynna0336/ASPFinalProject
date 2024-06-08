@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+@* <h1>Edit</h1>
 
 <h4>User</h4>
 <hr />
@@ -101,4 +101,106 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+} *@
+
+<div class="page-header ml-5">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Default" asp-controller="Home" asp-action="index" class="breadcrumb-item">
+                <i class="anticon anticon-home m-r-5"></i>Home
+            </a>
+            <a asp-area="Teacher" asp-controller="TeacherTests" asp-action="index" class="breadcrumb-item active">Your tests</a>
+            <span class="breadcrumb-item active">Edit</span>
+        </nav>
+    </div>
+</div>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Edit Information</h2>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label asp-for="@Model.Fullname" class="control-label">Test title</label>
+                        <input asp-for="@Model.Fullname" class="form-control" />
+                        <span asp-validation-for="@Model.Fullname" class="text-danger"></span>
+                    </div>
+
+                    @* <div class="form-group col-md-4 d-flex align-items-end justify-content-center">
+                        <div class="switch m-r-10">
+                            <input type="checkbox" id="switch-1" asp-for="@Model.IsOpen" checked="">
+                            <label for="switch-1"></label>
+                        </div>
+                        <label asp-for="@Model.IsOpen">Open</label>
+                    </div> *@
+
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.UserName" class="control-label"></label>
+                    <textarea asp-for="@Model.UserName" class="form-control"></textarea>
+                    <span asp-validation-for="@Model.UserName" class="text-danger"></span>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label asp-for="@Model.NormalizedUserName" class="control-label">Time (Min)</label>
+                        <input asp-for="@Model.NormalizedUserName" class="form-control" />
+                        <span asp-validation-for="@Model.NormalizedUserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="@Model.Email" class="control-label">Number of questions</label>
+                        <input asp-for="@Model.Email" class="form-control" />
+                        <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="@Model.NormalizedEmail" class="control-label"></label>
+                        <input asp-for="@Model.NormalizedEmail" class="form-control" />
+                        <span asp-validation-for="@Model.NormalizedEmail" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label asp-for="@Model.PasswordHash" class="control-label"></label>
+                        <input asp-for="@Model.PasswordHash" class="form-control" />
+                        <span asp-validation-for="@Model.PasswordHash" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label asp-for="@Model.SecurityStamp" class="control-label"></label>
+                        <input asp-for="@Model.SecurityStamp" class="form-control" />
+                        <span asp-validation-for="@Model.SecurityStamp" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label asp-for="@Model.PhoneNumber" class="control-label"></label>
+                        <input asp-for="@Model.PhoneNumber" class="form-control" />
+                        <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label asp-for="@Model.LockoutEnd" class="control-label"></label>
+                        <input asp-for="@Model.LockoutEnd" class="form-control" />
+                        <span asp-validation-for="@Model.LockoutEnd" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label asp-for="@Model.AccessFailedCount" class="control-label"></label>
+                        <input asp-for="@Model.AccessFailedCount" class="form-control" />
+                        <span asp-validation-for="@Model.AccessFailedCount" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <div class="form-group col-md-10">
+                        <a asp-action="Index" class="btn btn-success btn-tone">Back to List</a>
+                    </div>
+                    <div class="form-group col-md-2 d-flex align-items-center justify-content-between">
+                        <button type="submit" class="btn btn-info btn-tone">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
